@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/timelineFragment">
+
+    <fragment
+        android:id="@+id/timelineFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.TimelineFragment"
+        android:label="Timeline" />
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.FavoritesFragment"
+        android:label="Favorites" />
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.MapsFragment"
+        android:label="Maps" />
+
+    <fragment
+        android:id="@+id/addEventFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.AddEventFragment"
+        android:label="AddEvent" />
+
+    <action
+        android:id="@+id/action_timelineFragment_to_favoritesFragment"
+        app:destination="@id/favoritesFragment" />
+
+    <action
+        android:id="@+id/action_favoritesFragment_to_mapsFragment"
+        app:destination="@id/mapsFragment" />
+
+    <action
+        android:id="@+id/action_mapsFragment_to_AddEventFragment"
+        app:destination="@id/addEventFragment" />
+
+    <action
+        android:id="@+id/action_calendarFragment_to_timelineFragment"
+        app:destination="@id/timelineFragment" />
+
+</navigation>

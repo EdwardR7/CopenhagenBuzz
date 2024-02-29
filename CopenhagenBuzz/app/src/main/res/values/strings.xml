@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">CopenhagenBuzz</string>
+    <string name="event_name">Event name</string>
+    <string name="event_location">Event location</string>
+    <string name="event_date">Event date</string>
+    <string name="event_type">Event type</string>
+    <string name="event_desc">Event description</string>
+    <string-array name="simple_items">
+        <item>Festival</item>
+        <item>Carnival</item>
+        <item>Party</item>
+        <item>Reunion</item>
+    </string-array>
+    <string name="navigation_favorites">Favorites</string>
+    <string name="navigation_timeline">Timeline</string>
+    <string name="navigation_maps">Maps</string>
+    <string name="navigation_addevent">Add Event</string>
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+</resources>

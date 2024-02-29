@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_timeline"
+        android:enabled="true"
+        android:title="@string/navigation_timeline"
+        android:icon="@drawable/baseline_timeline_24" />
+    <item
+        android:id="@+id/navigation_favorites"
+        android:enabled="true"
+        android:title="@string/navigation_favorites"
+        android:icon="@drawable/baseline_favorite_24" />
+
+    <item
+        android:id="@+id/navigation_maps"
+        android:enabled="true"
+        android:title="@string/navigation_maps"
+        android:icon="@drawable/baseline_map_24" />
+
+    <item
+        android:id="@+id/navigation_addEvent"
+        android:enabled="true"
+        android:title="@string/navigation_addevent"
+        android:icon="@drawable/baseline_add_24" />
+</menu>

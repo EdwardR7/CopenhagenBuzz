@@ -99,10 +99,20 @@
 
                 <!-- Location and Date -->
                 <TextView
-                    android:id="@+id/text_event_location_date"
+                    android:id="@+id/text_event_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Location, Date"
+                    android:text="Event Location"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:layout_marginTop="8dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+                <TextView
+                    android:id="@+id/text_field_event_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Date"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:layout_marginTop="8dp"
                     android:maxLines="1"

@@ -29,9 +29,8 @@ class DataViewModel : ViewModel() {
 
     // Method to generate or fetch the list of events asynchronously
     private suspend fun generateOrFetchEvents(): List<Event> {
-        // Implement logic to generate or fetch the list of events
-        // For example, you can make a network request here
-        // For now, I'll provide mock data
+        // Implement real logic to generate or fetch the list of events
+        // mock data
         return listOf(
             Event("Event 1",  "Location 1", 1,"Type 1", "Description 1"),
             Event("Event 2",  "Location 2", 2,"Type 2", "Description 2"),

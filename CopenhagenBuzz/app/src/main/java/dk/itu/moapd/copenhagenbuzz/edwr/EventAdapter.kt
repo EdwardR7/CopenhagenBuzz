@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import dk.itu.moapd.copenhagenbuzz.edwr.Event
 
-class EventAdapter(private val context: Context, private val events: List<Event>) : BaseAdapter() {
+class EventAdapter(private val context: Context, private var events: List<Event>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
         val holder: ViewHolder
@@ -33,6 +33,10 @@ class EventAdapter(private val context: Context, private val events: List<Event>
         holder.descTextView.text = event.eventDescription
         return view!!
     }
+    fun updateEvents(newEvents: List<Event>) {
+        events = newEvents
+        notifyDataSetChanged() // Notify the adapter of the data set change
+    }
 
     override fun getCount(): Int { return events.size }
 
@@ -40,7 +44,7 @@ class EventAdapter(private val context: Context, private val events: List<Event>
 
     override fun getItemId(position: Int): Long { return position.toLong() }
 
-    private class ViewHolder {
+    private inner class ViewHolder {
         lateinit var titleTextView: TextView
         lateinit var locationTextView: TextView
         var date: Long = 0L

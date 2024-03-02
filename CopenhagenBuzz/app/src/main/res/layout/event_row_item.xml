@@ -88,7 +88,7 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/ic_launcher_background"/>
+                tools:src="@drawable/baseline_image_24"/>
 
             <!-- Bottom of the Card -->
             <LinearLayout

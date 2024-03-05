@@ -28,7 +28,7 @@ class DataViewModel : ViewModel() {
     }
 
     // Method to generate or fetch the list of events asynchronously
-    private suspend fun generateOrFetchEvents(): List<Event> {
+    private fun generateOrFetchEvents(): List<Event> {
         // Implement real logic to generate or fetch the list of events
         // mock data
         return listOf(

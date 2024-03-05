@@ -40,7 +40,7 @@
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:src="@drawable/baseline_account_circle_24"
-                android:contentDescription="Profile Picture"
+                android:contentDescription="@string/profile_picture"
                 android:scaleType="centerCrop"
                 android:padding="8dp"/>
 
@@ -56,7 +56,7 @@
                         android:id="@+id/text_event_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Event Title"
+                        android:text="@string/event_title"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="@color/black"
                         android:maxLines="1"
@@ -67,7 +67,7 @@
                         android:id="@+id/text_event_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Event Type"
+                        android:text="@string/event_typeX"
                         android:textAppearance="?attr/textAppearanceBody2"/>
                 </LinearLayout>
 
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:src="@drawable/baseline_favorite_24"
-                    android:contentDescription="Heart Icon"/>
+                    android:contentDescription="@string/heart_icon"/>
             </LinearLayout>
 
             <!-- Middle of the Card - Image -->
@@ -102,7 +102,7 @@
                     android:id="@+id/text_event_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Location"
+                    android:text="@string/event_locationX"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:layout_marginTop="8dp"
                     android:maxLines="1"
@@ -112,7 +112,7 @@
                     android:id="@+id/text_field_event_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Date"
+                    android:text="@string/event_dateX"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:layout_marginTop="8dp"
                     android:maxLines="1"
@@ -123,7 +123,7 @@
                     android:id="@+id/text_event_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Description"
+                    android:text="@string/event_description"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:layout_marginTop="8dp"
                     android:maxLines="2"
@@ -141,7 +141,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Edit"
+                        android:text="@string/editButton"
                         android:background="@null"/>
 
                     <Button
@@ -149,7 +149,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Info"
+                        android:text="@string/infoButton"
                         android:background="@null"/>
 
                 </LinearLayout>

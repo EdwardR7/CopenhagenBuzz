@@ -16,4 +16,20 @@
     <string name="navigation_maps">Maps</string>
     <string name="navigation_addevent">Add Event</string>
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="logoutButton">logout</string>
+    <string name="loginButton">login</string>
+    <string name="mapsString">Maps</string>
+    <string name="favoritesString">Favorites</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="event_title">Event Title</string>
+    <string name="event_typeX">Event Type</string>
+    <string name="heart_icon">Heart Icon</string>
+    <string name="event_locationX">Event Location</string>
+    <string name="event_dateX">Event Date</string>
+    <string name="event_description">Event Description</string>
+    <string name="editButton">Edit</string>
+    <string name="infoButton">Info</string>
+    <string name="choose_login_method">Choose login method</string>
+    <string name="loginText">Login</string>
+    <string name="guestText">Guest</string>
 </resources>

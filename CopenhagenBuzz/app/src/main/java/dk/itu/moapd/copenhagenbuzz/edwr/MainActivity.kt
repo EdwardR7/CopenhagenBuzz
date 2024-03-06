@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private var isFavoriteClicked = false
 
     /**
      * Called when the activity is starting.
@@ -70,18 +71,22 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.timelineFragment)
                     true
                 }
+
                 R.id.navigation_favorites -> {
                     navController.navigate(R.id.favoritesFragment)
                     true
                 }
+
                 R.id.navigation_maps -> {
                     navController.navigate(R.id.mapsFragment)
                     true
                 }
+
                 R.id.navigation_addEvent -> {
                     navController.navigate(R.id.addEventFragment)
                     true
                 }
+
                 else -> false
             }
         }
@@ -102,12 +107,27 @@ class MainActivity : AppCompatActivity() {
                         finish()
                         true
                     }
+
                     R.id.logout -> {
                         val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
                             putExtra("isLoggedIn", true)
                         }
                         startActivity(intent)
                         finish()
+                        true
+                    }
+
+                    R.id.button_favorite -> {
+                        // Toggle the state of the favorites button
+                        isFavoriteClicked = !isFavoriteClicked
+                        // Pass the current state to the TimelineFragment
+                        val timelineFragment =
+                            supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(
+                                0
+                            )
+                        if (timelineFragment is TimelineFragment) {
+                            timelineFragment.updateFavoritesState(isFavoriteClicked)
+                        }
                         true
                     }
                     else -> false

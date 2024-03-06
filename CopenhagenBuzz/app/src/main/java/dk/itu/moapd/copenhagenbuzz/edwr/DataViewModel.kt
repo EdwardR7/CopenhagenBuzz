@@ -32,9 +32,9 @@ class DataViewModel : ViewModel() {
         // Implement real logic to generate or fetch the list of events
         // mock data
         return listOf(
-            Event("Event 1",  "Location 1", 1,"Type 1", "Description 1"),
-            Event("Event 2",  "Location 2", 2,"Type 2", "Description 2"),
-            Event("Event 3",  "Location 3", 3, "Type 3","Description 3")
+            Event("Event 1",  "Location 1", 1,"Type 1", "Description 1",false),
+            Event("Event 2",  "Location 2", 2,"Type 2", "Description 2",false),
+            Event("Event 3",  "Location 3", 3, "Type 3","Description 3",false)
             // Add more events as needed
         )
     }

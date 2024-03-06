@@ -71,14 +71,17 @@
                         android:textAppearance="?attr/textAppearanceBody2"/>
                 </LinearLayout>
 
-                <!-- Right Heart Icon -->
-                <ImageView
-                    android:id="@+id/icon_heart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:src="@drawable/baseline_favorite_24"
-                    android:contentDescription="@string/heart_icon"/>
+                <!-- Favorites Button -->
+                <ToggleButton
+                    android:id="@+id/button_favorite"
+                    android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:background="@drawable/toggle_favorite_selector"
+                android:textOff=""
+                android:textOn=""
+                android:contentDescription="@string/heart_icon"/>
+
             </LinearLayout>
 
             <!-- Middle of the Card - Image -->

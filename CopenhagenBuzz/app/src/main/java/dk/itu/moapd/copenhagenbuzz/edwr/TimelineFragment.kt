@@ -11,6 +11,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
 class TimelineFragment : Fragment() {
 
     private var _binding: FragmentTimelineBinding? = null
+    private var isFavorite: Boolean = false
     private val binding get() = _binding!!
 
     private lateinit var dataViewModel: DataViewModel
@@ -50,4 +51,9 @@ class TimelineFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    fun updateFavoritesState(isFavoriteClicked: Boolean) {
+        isFavorite = isFavoriteClicked
+    }
+
 }

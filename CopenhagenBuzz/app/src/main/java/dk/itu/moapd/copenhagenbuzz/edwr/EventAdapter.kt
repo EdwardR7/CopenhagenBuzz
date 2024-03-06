@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.TextView
-import dk.itu.moapd.copenhagenbuzz.edwr.Event
+import android.widget.ToggleButton
 
 class EventAdapter(private val context: Context, private var events: List<Event>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -20,6 +21,7 @@ class EventAdapter(private val context: Context, private var events: List<Event>
             holder.locationTextView = view.findViewById(R.id.text_event_location)
             holder.typeTextView = view.findViewById(R.id.text_event_type)
             holder.descTextView = view.findViewById(R.id.text_event_description)
+            holder.favoriteButton = view.findViewById(R.id.button_favorite)
             view.tag = holder
         } else {
             holder = view.tag as ViewHolder
@@ -28,11 +30,19 @@ class EventAdapter(private val context: Context, private var events: List<Event>
         val event = events[position]
         holder.titleTextView.text = event.eventName
         holder.locationTextView.text = event.eventLocation
-        holder.date = event.eventDate
         holder.typeTextView.text = event.eventType
         holder.descTextView.text = event.eventDescription
+        holder.favoriteButton.isChecked = event.isFavorite
+
+        // Handle favorite button click
+        holder.favoriteButton.setOnCheckedChangeListener { buttonView, isChecked ->
+            event.isFavorite = isChecked
+            // You can perform additional actions here, such as updating the database or UI
+        }
+
         return view!!
     }
+
     fun updateEvents(newEvents: List<Event>) {
         events = newEvents
         notifyDataSetChanged() // Notify the adapter of the data set change
@@ -47,9 +57,8 @@ class EventAdapter(private val context: Context, private var events: List<Event>
     private inner class ViewHolder {
         lateinit var titleTextView: TextView
         lateinit var locationTextView: TextView
-        var date: Long = 0L
         lateinit var typeTextView: TextView
         lateinit var descTextView: TextView
+        lateinit var favoriteButton: ToggleButton
     }
 }
-

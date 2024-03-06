@@ -37,5 +37,6 @@ package dk.itu.moapd.copenhagenbuzz.edwr
                      var eventLocation: String,
                      var eventDate: Long,
                      var eventType: String,
-                     var eventDescription: String)
+                     var eventDescription: String,
+                     var isFavorite: Boolean = false )
 

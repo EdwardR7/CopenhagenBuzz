@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="142dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/image_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_account_circle_24"
+            android:contentDescription="@string/profile_picture"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="8dp"/>
+
+        <!-- Event Title -->
+
+        <!-- Event Type -->
+        <TextView
+            android:id="@+id/text_event_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/event_title"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/guideline_middle"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/image_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Event Image -->
+        <TextView
+            android:id="@+id/text_event_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/event_typeX"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintEnd_toStartOf="@id/guideline_middle"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/image_profile"
+            app:layout_constraintTop_toBottomOf="@id/text_event_title" />
+
+        <ImageView
+            android:id="@+id/image_event"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/baseline_image_24"/>
+
+        <!-- Guideline for middle divider -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.64" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var dataViewModel: DataViewModel
     private var isFavoriteClicked = false
 
     /**

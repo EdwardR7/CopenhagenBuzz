@@ -1,15 +1,28 @@
 package dk.itu.moapd.copenhagenbuzz.edwr
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.TextView
 import android.widget.ToggleButton
+import androidx.fragment.app.Fragment
+import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
+import dk.itu.moapd.copenhagenbuzz.edwr.databinding.EventRowItemBinding
+import dk.itu.moapd.copenhagenbuzz.edwr.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.DataViewModel
+class EventAdapter(
+    private val context: Context,
+    private var events: List<Event>,
+    private val eventClickListener: EventClickListener
+) : BaseAdapter() {
 
-class EventAdapter(private val context: Context, private var events: List<Event>) : BaseAdapter() {
+    interface EventClickListener {
+        fun onFavoriteClicked(event: Event)
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
         val holder: ViewHolder
@@ -34,10 +47,9 @@ class EventAdapter(private val context: Context, private var events: List<Event>
         holder.descTextView.text = event.eventDescription
         holder.favoriteButton.isChecked = event.isFavorite
 
-        // Handle favorite button click
-        holder.favoriteButton.setOnCheckedChangeListener { buttonView, isChecked ->
+        holder.favoriteButton.setOnCheckedChangeListener { _, isChecked ->
             event.isFavorite = isChecked
-            // You can perform additional actions here, such as updating the database or UI
+            eventClickListener.onFavoriteClicked(event)
         }
 
         return view!!
@@ -45,14 +57,14 @@ class EventAdapter(private val context: Context, private var events: List<Event>
 
     fun updateEvents(newEvents: List<Event>) {
         events = newEvents
-        notifyDataSetChanged() // Notify the adapter of the data set change
+        notifyDataSetChanged()
     }
 
-    override fun getCount(): Int { return events.size }
+    override fun getCount(): Int = events.size
 
-    override fun getItem(position: Int): Any { return events[position] }
+    override fun getItem(position: Int): Any = events[position]
 
-    override fun getItemId(position: Int): Long { return position.toLong() }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     inner class ViewHolder {
         lateinit var titleTextView: TextView

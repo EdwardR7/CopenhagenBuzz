@@ -119,16 +119,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.button_favorite -> {
-                        // Toggle the state of the favorites button
-                        isFavoriteClicked = !isFavoriteClicked
-                        // Pass the current state to the TimelineFragment
-                        val timelineFragment =
-                            supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(
-                                0
-                            )
-                        if (timelineFragment is TimelineFragment) {
-                            timelineFragment.updateFavoritesState(isFavoriteClicked)
-                        }
                         true
                     }
                     else -> false

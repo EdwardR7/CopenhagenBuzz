@@ -13,12 +13,9 @@ class FavoritesFragment : Fragment() {
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var favoriteAdapter: FavoriteAdapter
-    private lateinit var recyclerViewFavorites: RecyclerView
     private lateinit var dataViewModel: DataViewModel
 
-    //Add getView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,21 +28,15 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize DataViewModel
         dataViewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
-        recyclerViewFavorites = binding.RecyclerViewFavorites // Initialize recyclerViewFavorites first
-
-        // Initialize RecyclerView adapter
+        val recyclerViewFavorites = binding.RecyclerViewFavorites
         favoriteAdapter = FavoriteAdapter(requireContext(), emptyList())
         recyclerViewFavorites.adapter = favoriteAdapter
-
-        // Set layout manager for RecyclerView
         recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
 
-        dataViewModel.events.observe(viewLifecycleOwner) { events ->
-            // Update the adapter with the new list of events
-            favoriteAdapter.updateFavorites(events)
+        dataViewModel.favorites.observe(viewLifecycleOwner) { favoriteEvents ->
+            favoriteAdapter.updateFavorites(favoriteEvents)
         }
     }
 

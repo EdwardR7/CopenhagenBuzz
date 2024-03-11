@@ -54,7 +54,7 @@ class EventAdapter(private val context: Context, private var events: List<Event>
 
     override fun getItemId(position: Int): Long { return position.toLong() }
 
-    private inner class ViewHolder {
+    inner class ViewHolder {
         lateinit var titleTextView: TextView
         lateinit var locationTextView: TextView
         lateinit var typeTextView: TextView

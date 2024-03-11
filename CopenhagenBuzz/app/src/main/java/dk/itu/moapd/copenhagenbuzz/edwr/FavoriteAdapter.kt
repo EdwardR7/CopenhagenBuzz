@@ -12,15 +12,9 @@ import dk.itu.moapd.copenhagenbuzz.edwr.R
 
 class FavoriteAdapter(
     private val context: Context,
-    private val favoriteEvents: List<Event>
+    private var favoriteEvents: List<Event>
 ) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
-    // ViewHolder class to hold references to views in each list item
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTextView: TextView = itemView.findViewById(R.id.text_event_title)
-        val typeTextView: TextView = itemView.findViewById(R.id.text_event_type)
-        //Profile and ImageView here also
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.favorite_row_item, parent, false)
@@ -38,5 +32,17 @@ class FavoriteAdapter(
 
     override fun getItemCount(): Int {
         return favoriteEvents.size
+    }
+
+    fun updateFavorites(newEvents: List<Event>) {
+        favoriteEvents = newEvents
+        notifyDataSetChanged() // Notify the adapter of the data set change
+    }
+
+    // ViewHolder class to hold references to views in each list item
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val titleTextView: TextView = itemView.findViewById(R.id.text_event_title)
+        val typeTextView: TextView = itemView.findViewById(R.id.text_event_type)
+        //Profile and ImageView here also
     }
 }

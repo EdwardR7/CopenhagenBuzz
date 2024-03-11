@@ -26,13 +26,11 @@ package dk.itu.moapd.copenhagenbuzz.edwr
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityMainBinding
 
@@ -45,8 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var dataViewModel: DataViewModel
-    private var isFavoriteClicked = false
 
     /**
      * Called when the activity is starting.
@@ -115,10 +111,6 @@ class MainActivity : AppCompatActivity() {
                         }
                         startActivity(intent)
                         finish()
-                        true
-                    }
-
-                    R.id.button_favorite -> {
                         true
                     }
                     else -> false

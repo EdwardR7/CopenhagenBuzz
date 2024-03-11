@@ -1,19 +1,12 @@
 package dk.itu.moapd.copenhagenbuzz.edwr
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
-import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
-import dk.itu.moapd.copenhagenbuzz.edwr.databinding.EventRowItemBinding
-import dk.itu.moapd.copenhagenbuzz.edwr.Event
-import dk.itu.moapd.copenhagenbuzz.edwr.DataViewModel
 class TimelineFragment : Fragment(), EventAdapter.EventClickListener {
 
     private var _binding: FragmentTimelineBinding? = null
@@ -55,6 +48,5 @@ class TimelineFragment : Fragment(), EventAdapter.EventClickListener {
         } else {
             dataViewModel.removeFromFavorites(event)
         }
-        // Update UI if necessary
     }
 }

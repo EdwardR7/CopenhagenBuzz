@@ -14,7 +14,7 @@ class DataViewModel : ViewModel() {
     val events: LiveData<List<Event>>
         get() = _events
 
-    val favorites: LiveData<List<Event>>
+    val favorites: LiveData<List<Event>> //To reference
         get() = _favorites
 
     fun fetchEvents() {

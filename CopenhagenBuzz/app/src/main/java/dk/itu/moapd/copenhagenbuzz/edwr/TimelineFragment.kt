@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
-class TimelineFragment : Fragment(), EventAdapter.EventClickListener {
+class TimelineFragment : Fragment(){
 
     private var _binding: FragmentTimelineBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var dataViewModel: DataViewModel
+    private val dataViewModel: DataViewModel by viewModels()
     private lateinit var eventAdapter: EventAdapter
 
     override fun onCreateView(
@@ -26,27 +27,13 @@ class TimelineFragment : Fragment(), EventAdapter.EventClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataViewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
-        dataViewModel.fetchEvents()
-
-        eventAdapter = EventAdapter(requireContext(), emptyList(), this)
-        binding.listViewEvents.adapter = eventAdapter
-
         dataViewModel.events.observe(viewLifecycleOwner) { events ->
-            eventAdapter.updateEvents(events)
+            binding.listViewEvents.adapter = EventAdapter(requireContext(),events,R.layout.event_row_item,dataViewModel)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onFavoriteClicked(event: Event) {
-        if (event.isFavorite) {
-            dataViewModel.addToFavorites(event)
-        } else {
-            dataViewModel.removeFromFavorites(event)
-        }
     }
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,7 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private lateinit var favoriteAdapter: FavoriteAdapter
-    private lateinit var dataViewModel: DataViewModel
+    private val dataViewModel: DataViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,15 +29,12 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataViewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
-
         val recyclerViewFavorites = binding.RecyclerViewFavorites
-        favoriteAdapter = FavoriteAdapter(requireContext(), emptyList())
-        recyclerViewFavorites.adapter = favoriteAdapter
         recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
 
         dataViewModel.favorites.observe(viewLifecycleOwner) { favoriteEvents ->
-            favoriteAdapter.updateFavorites(favoriteEvents)
+            favoriteAdapter = FavoriteAdapter(requireContext(), favoriteEvents)
+            recyclerViewFavorites.adapter = favoriteAdapter
         }
     }
 

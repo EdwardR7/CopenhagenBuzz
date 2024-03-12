@@ -34,11 +34,6 @@ class FavoriteAdapter(
         return favoriteEvents.size
     }
 
-    fun updateFavorites(newEvents: List<Event>) {
-        favoriteEvents = newEvents
-        notifyDataSetChanged() // Notify the adapter of the data set change
-    }
-
     // ViewHolder class to hold references to views in each list item
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.text_event_title)

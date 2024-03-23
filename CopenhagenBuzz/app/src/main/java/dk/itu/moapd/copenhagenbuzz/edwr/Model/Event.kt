@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.Model
 
 /**
  * Represents an event
@@ -40,3 +40,4 @@ package dk.itu.moapd.copenhagenbuzz.edwr
                      var eventDescription: String,
                      var isFavorite: Boolean = false )
 
+//READ: We use these in AddEventFragment for now, hence var

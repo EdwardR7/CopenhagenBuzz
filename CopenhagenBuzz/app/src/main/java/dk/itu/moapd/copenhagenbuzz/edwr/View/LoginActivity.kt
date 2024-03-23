@@ -1,10 +1,10 @@
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.View
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dk.itu.moapd.copenhagenbuzz.edwr.View.MainActivity
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityLoginBinding
-import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ContentMainBinding
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
         with(binding){
 
             loginButton.setOnClickListener{
-                val intent = Intent(this@LoginActivity,MainActivity::class.java).apply {
+                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
                     putExtra("isLoggedIn", true)
                 }
                 startActivity(intent)
@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             guestButton.setOnClickListener{
-                val intent = Intent(this@LoginActivity,MainActivity::class.java).apply {
+                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
                     putExtra("isLoggedIn", false)
                 }
                 startActivity(intent)

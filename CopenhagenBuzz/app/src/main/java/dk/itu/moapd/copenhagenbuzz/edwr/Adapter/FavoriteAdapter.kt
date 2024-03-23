@@ -1,13 +1,12 @@
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import dk.itu.moapd.copenhagenbuzz.edwr.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 
 class FavoriteAdapter(

@@ -1,11 +1,10 @@
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.View
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentFavoritesBinding
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentMapsBinding
 
 class MapsFragment : Fragment() {

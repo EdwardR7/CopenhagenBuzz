@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.View
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 import java.util.Calendar
 import java.util.TimeZone

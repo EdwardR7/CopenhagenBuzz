@@ -1,9 +1,10 @@
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.ViewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import kotlinx.coroutines.launch
 
 class DataViewModel : ViewModel() {

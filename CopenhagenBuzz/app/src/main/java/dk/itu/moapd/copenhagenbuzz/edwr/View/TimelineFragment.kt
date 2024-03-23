@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.View
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
+import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.EventAdapter
+import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
 class TimelineFragment : Fragment(){
 
@@ -28,7 +30,8 @@ class TimelineFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         dataViewModel.events.observe(viewLifecycleOwner) { events ->
-            binding.listViewEvents.adapter = EventAdapter(requireContext(),events,R.layout.event_row_item,dataViewModel)
+            binding.listViewEvents.adapter = EventAdapter(requireContext(),events,
+                R.layout.event_row_item,dataViewModel)
         }
     }
 

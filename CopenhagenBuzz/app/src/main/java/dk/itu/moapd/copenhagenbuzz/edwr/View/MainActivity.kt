@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dk.itu.moapd.copenhagenbuzz.edwr
+package dk.itu.moapd.copenhagenbuzz.edwr.View
 
 import android.content.Intent
 import android.os.Bundle
@@ -31,7 +31,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityMainBinding
 
 /**
@@ -60,33 +62,9 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Set up bottom navigation view
+        // Set up bottom navigation view with Jetpack
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_timeline -> {
-                    navController.navigate(R.id.timelineFragment)
-                    true
-                }
-
-                R.id.navigation_favorites -> {
-                    navController.navigate(R.id.favoritesFragment)
-                    true
-                }
-
-                R.id.navigation_maps -> {
-                    navController.navigate(R.id.mapsFragment)
-                    true
-                }
-
-                R.id.navigation_addEvent -> {
-                    navController.navigate(R.id.addEventFragment)
-                    true
-                }
-
-                else -> false
-            }
-        }
+        bottomNavigationView.setupWithNavController(navController)
 
         // Set up action bar with navigation controller
         setSupportActionBar(binding.toolbar)

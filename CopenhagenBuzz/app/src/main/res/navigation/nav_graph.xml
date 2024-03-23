@@ -2,42 +2,42 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/timelineFragment">
+    app:startDestination="@id/TimelineFragment">
 
     <fragment
-        android:id="@+id/timelineFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.TimelineFragment"
+        android:id="@+id/TimelineFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.TimelineFragment"
         android:label="Timeline" />
 
     <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.FavoritesFragment"
+        android:id="@+id/FavoritesFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.FavoritesFragment"
         android:label="Favorites" />
 
     <fragment
-        android:id="@+id/mapsFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.MapsFragment"
+        android:id="@+id/MapsFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.MapsFragment"
         android:label="Maps" />
 
     <fragment
-        android:id="@+id/addEventFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.AddEventFragment"
+        android:id="@+id/AddEventFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.AddEventFragment"
         android:label="AddEvent" />
 
     <action
         android:id="@+id/action_timelineFragment_to_favoritesFragment"
-        app:destination="@id/favoritesFragment" />
+        app:destination="@id/FavoritesFragment" />
 
     <action
         android:id="@+id/action_favoritesFragment_to_mapsFragment"
-        app:destination="@id/mapsFragment" />
+        app:destination="@id/MapsFragment" />
 
     <action
         android:id="@+id/action_mapsFragment_to_AddEventFragment"
-        app:destination="@id/addEventFragment" />
+        app:destination="@id/AddEventFragment" />
 
     <action
         android:id="@+id/action_calendarFragment_to_timelineFragment"
-        app:destination="@id/timelineFragment" />
+        app:destination="@id/TimelineFragment" />
 
 </navigation>

@@ -15,10 +15,4 @@
         android:layout_marginTop="50dp"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/navigation_timeline"
-        app:layout_constraintTop_toBottomOf="@id/listView_events" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

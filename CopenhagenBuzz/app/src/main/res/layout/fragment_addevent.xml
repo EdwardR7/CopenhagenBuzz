@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".View.AddEventFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/navigation_addevent" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_name"
         style="@style/AppTheme.TextInputLayout"
@@ -102,23 +97,16 @@
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- CoordinatorLayout with FloatingActionButton -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/baseline_add_24"
+        android:layout_marginBottom="130dp"
+        android:layout_marginEnd="30dp"
+        style="?attr/floatingActionButtonSecondaryStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/navigation_addevent" />
 
-        <!-- Floating Action Button -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_event_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/baseline_add_24"
-            android:layout_marginBottom="130dp"
-            android:layout_marginStart="320dp"
-            android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="?attr/floatingActionButtonSecondaryStyle"
-            android:contentDescription="@string/event_desc"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

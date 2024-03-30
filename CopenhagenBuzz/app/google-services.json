@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "825563105995",
+    "project_id": "copenhagenbuzz-fbb09",
+    "storage_bucket": "copenhagenbuzz-fbb09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825563105995:android:c16fbb1a09bb3e0210a94e",
+        "android_client_info": {
+          "package_name": "dk.itu.moapd.copenhagenbuzz.edwr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825563105995-5c8gnoeqi5ihfjehi1kn5cb8842rsiip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.itu.moapd.copenhagenbuzz.edwr",
+            "certificate_hash": "b3555609819dd0c12c99bf6c65d11666e3054b45"
+          }
+        },
+        {
+          "client_id": "825563105995-jhbp00pj94cj45mt4ml1d10u8q1n4eqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.itu.moapd.copenhagenbuzz.edwr",
+            "certificate_hash": "774c7e0236c686c42fc78aa69deda44d07ea8d49"
+          }
+        },
+        {
+          "client_id": "825563105995-opnvfdvc3ouoma0osbk3t2on4lpihjpg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.itu.moapd.copenhagenbuzz.edwr",
+            "certificate_hash": "14fb1dc02c6184dcdbca5c639c79f362aa4b6377"
+          }
+        },
+        {
+          "client_id": "825563105995-shus5n95108vj65fa42n7qeptk6jqa3q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.itu.moapd.copenhagenbuzz.edwr",
+            "certificate_hash": "590560c9b74bda30178637aa82365a74ca8609b1"
+          }
+        },
+        {
+          "client_id": "825563105995-uq4rfvo65c8f9sestu5i4i515flahu30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.itu.moapd.copenhagenbuzz.edwr",
+            "certificate_hash": "40bc2972d4d43d030198facb966ba63d227a5638"
+          }
+        },
+        {
+          "client_id": "825563105995-9an1ur1u1jqja4aa68erehppdisurer7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB972yf6VIGcXirw_bAKf5r-PeLXJr993w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825563105995-9an1ur1u1jqja4aa68erehppdisurer7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

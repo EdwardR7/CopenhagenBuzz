@@ -27,12 +27,14 @@ package dk.itu.moapd.copenhagenbuzz.edwr.View
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityMainBinding
 
@@ -43,6 +45,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var auth : FirebaseAuth
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
@@ -56,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize FirebaseAuth
+        auth = FirebaseAuth.getInstance()
 
         // Initialize the NavHostFragment
         val navHostFragment =
@@ -74,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             setSupportActionBar(toolbar)
             toolbar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.login -> {
+                    R.id.loginButton -> {
                         val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
                             putExtra("isLoggedIn", false)
                         }
@@ -83,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
 
-                    R.id.logout -> {
+                    R.id.action_logout -> {
                         val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
                             putExtra("isLoggedIn", true)
                         }
@@ -97,6 +103,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        // Redirect to loginactity if not logged in
+        auth.currentUser ?: startLoginActivity()
+    }
+
+    private fun startLoginActivity() {
+        Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.let(::startActivity)
+    }
+
     /**
      * Initialize activity's options menu (standard options).
      * @param menu is where we place the items.
@@ -108,21 +127,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Prepare the option menu to be displayed on screen.
-     * @param menu as last shown or first initialized by onCreateOptionsMenu().
-     * @return must return true for the menu to be displayed.
-     */
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menu.findItem(R.id.login).isVisible = !intent.getBooleanExtra("isLoggedIn", false)
-        menu.findItem(R.id.logout).isVisible = intent.getBooleanExtra("isLoggedIn", false)
-        return true
-    }
-
-    /**
      * This method is called when the user navigates up.
      * @return true if navigation was a success and Activity was finished, false otherwise.
      */
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem):
+            Boolean = when (item.itemId) {
+        // Handle top app bar menu item clicks.
+        R.id.action_user_info -> {
+            UserInfoDialogFragment().apply {
+                isCancelable = false
+            }.also { dialogFragment ->
+                dialogFragment.show(supportFragmentManager,
+                    "UserInfoDialogFragment")
+            }
+            true
+        }
+        R.id.action_logout -> {
+            auth.signOut()
+            startLoginActivity()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

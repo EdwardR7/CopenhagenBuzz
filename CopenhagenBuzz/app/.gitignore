@@ -1,1 +1,5 @@
+# Android build directory
 /build
+
+# Ignore .env file
+.env

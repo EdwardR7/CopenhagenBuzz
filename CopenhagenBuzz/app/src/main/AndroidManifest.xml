@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CopenhagenBuzz"
-        android:name="dk.itu.moapd.materialdesign.dk.itu.moapd.copenhagenbuzz.edwr.MyApplication"
+        android:name=".MyApplication"
         tools:targetApi="31">
         <activity
             android:name=".View.MainActivity"

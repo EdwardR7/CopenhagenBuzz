@@ -38,6 +38,7 @@ package dk.itu.moapd.copenhagenbuzz.edwr.Model
                      var eventDate: Long,
                      var eventType: String,
                      var eventDescription: String,
-                     var isFavorite: Boolean = false )
+                     var isFavorite: Boolean = false,
+                     var userId: String)
 
 //READ: We use these in AddEventFragment for now, hence var

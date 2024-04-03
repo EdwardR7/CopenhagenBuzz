@@ -1,13 +1,14 @@
-package dk.itu.moapd.copenhagenbuzz.edwr.View
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
-import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.FavoriteAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentFavoritesBinding
 
 class FavoritesFragment : Fragment() {
@@ -15,7 +16,6 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private lateinit var favoriteAdapter: FavoriteAdapter
-    private val dataViewModel: DataViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,10 +32,28 @@ class FavoritesFragment : Fragment() {
         val recyclerViewFavorites = binding.RecyclerViewFavorites
         recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
 
-        dataViewModel.favorites.observe(viewLifecycleOwner) { favoriteEvents ->
-            favoriteAdapter = FavoriteAdapter(requireContext(), favoriteEvents)
-            recyclerViewFavorites.adapter = favoriteAdapter
-        }
+        val query = FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid ?: "")
+            .child("favorites")
+            .orderByChild("eventDate")
+
+        val options = FirebaseRecyclerOptions.Builder<Event>()
+            .setQuery(query, Event::class.java)
+            .build()
+
+        favoriteAdapter = FavoriteAdapter(options, requireContext())
+        recyclerViewFavorites.adapter = favoriteAdapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        favoriteAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        favoriteAdapter.stopListening()
     }
 
     override fun onDestroyView() {

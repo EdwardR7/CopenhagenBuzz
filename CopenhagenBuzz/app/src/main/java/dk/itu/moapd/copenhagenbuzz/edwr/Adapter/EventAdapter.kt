@@ -1,59 +1,39 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.Adapter
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.ToggleButton
+import com.firebase.ui.database.FirebaseListAdapter
+import com.firebase.ui.database.FirebaseListOptions
+import com.google.firebase.database.Query
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 
 class EventAdapter(
-    private val context: Context,
-    private var events: List<Event>,
-    private var ressource: Int,
-    private var dataViewModel: DataViewModel
-) : ArrayAdapter<Event>(context, R.layout.event_row_item,events
-) {
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var view = convertView
-        val holder: ViewHolder
+    context: Context,
+    private val dataViewModel: DataViewModel,
+    options: FirebaseListOptions<Event>,
+    private val ref: Query
+) : FirebaseListAdapter<Event>(options) {
 
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(ressource, parent, false)
-            holder = ViewHolder(view)
-            view.tag = holder
-        } else {
-            holder = view.tag as ViewHolder
-        }
+    override fun populateView(v: View, model: Event, position: Int) {
+        val titleTextView: TextView = v.findViewById(R.id.text_event_title)
+        val locationTextView: TextView = v.findViewById(R.id.text_event_location)
+        val typeTextView: TextView = v.findViewById(R.id.text_event_type)
+        val descTextView: TextView = v.findViewById(R.id.text_event_description)
+        val favoriteButton: ToggleButton = v.findViewById(R.id.button_favorite)
 
-        val event = events[position]
-        holder.bind(event)
+        titleTextView.text = model.eventName
+        locationTextView.text = model.eventLocation
+        typeTextView.text = model.eventType
+        descTextView.text = model.eventDescription
 
-        return view!!
-    }
-
-    private inner class ViewHolder(view: View) {
-        private val titleTextView: TextView = view.findViewById(R.id.text_event_title)
-        private val locationTextView: TextView = view.findViewById(R.id.text_event_location)
-        private val typeTextView: TextView = view.findViewById(R.id.text_event_type)
-        private val descTextView: TextView = view.findViewById(R.id.text_event_description)
-        private val favoriteButton: ToggleButton = view.findViewById(R.id.button_favorite)
-
-        fun bind(event: Event) {
-            titleTextView.text = event.eventName
-            locationTextView.text = event.eventLocation
-            typeTextView.text = event.eventType
-            descTextView.text = event.eventDescription
-
-            favoriteButton.setOnCheckedChangeListener { _, isChecked ->
-                event.isFavorite = isChecked
-                dataViewModel.onFavoriteClicked(event)
-                dataViewModel.fetchFavorites()
-            }
+        favoriteButton.setOnCheckedChangeListener { _, isChecked ->
+            model.isFavorite = isChecked
+            dataViewModel.onFavoriteClicked(model)
+            dataViewModel.fetchFavorites()
         }
     }
 }

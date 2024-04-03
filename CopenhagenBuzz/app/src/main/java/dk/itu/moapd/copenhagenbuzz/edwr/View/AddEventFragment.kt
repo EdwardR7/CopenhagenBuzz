@@ -15,7 +15,7 @@ import java.util.Calendar
 import java.util.TimeZone
 
 class AddEventFragment : Fragment() {
-    private val event: Event = Event("", "", 0, "", "",false)
+    private val event: Event = Event("", "", 0, "", "",false,"")
     private var _binding: FragmentAddeventBinding? = null
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private val binding

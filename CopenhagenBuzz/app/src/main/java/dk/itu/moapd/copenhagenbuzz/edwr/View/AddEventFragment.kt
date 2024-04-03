@@ -1,5 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View
 
+import com.google.firebase.auth.FirebaseAuth
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import java.util.TimeZone
 class AddEventFragment : Fragment() {
     private val event: Event = Event("", "", 0, "", "",false)
     private var _binding: FragmentAddeventBinding? = null
+    private val currentUser = FirebaseAuth.getInstance().currentUser
     private val binding
 
         get() = requireNotNull(_binding) {
@@ -42,7 +44,8 @@ class AddEventFragment : Fragment() {
                 }
             }
 
-            addEventButton.setOnClickListener {
+            currentUser?.let {
+                addEventButton.setOnClickListener {
                 Log.d("AddEventFragment", "Add event button clicked")
                 // Update the object attributes.
                 event.eventName = editTextEventName.text.toString().trim()
@@ -65,7 +68,7 @@ class AddEventFragment : Fragment() {
                         .setAnchorView(binding.addEventButton)
                         .show()
                 }
-            }
+            }}
         }
     }
     override fun onDestroyView() {

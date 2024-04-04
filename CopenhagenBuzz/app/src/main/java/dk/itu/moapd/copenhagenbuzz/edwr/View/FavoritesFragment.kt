@@ -1,6 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View
 
-import FavoriteAdapter
+import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.FavoriteAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
+import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentFavoritesBinding
 
 class FavoritesFragment : Fragment() {
@@ -34,32 +37,22 @@ class FavoritesFragment : Fragment() {
         val recyclerViewFavorites = binding.RecyclerViewFavorites
         recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
 
-        val query = FirebaseDatabase.getInstance().reference
-            .child("users")
-            .child(FirebaseAuth.getInstance().currentUser?.uid ?: "")
-            .child("favorites")
-            .orderByChild("eventDate")
+        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+            val query = Firebase.database(DATABASE_URL!!).reference
+                .child("users")
+                .child(userId)
+                .child("favorites")
+                .orderByChild("eventDate")
 
-        val options = FirebaseRecyclerOptions.Builder<Event>()
-            .setQuery(query, Event::class.java)
-            .build()
 
-        favoriteAdapter = FavoriteAdapter(options, requireContext())
-        recyclerViewFavorites.adapter = favoriteAdapter
-    }
+            // Firebase query to fetch all events from the database ordered by startDate
+            val options = FirebaseRecyclerOptions.Builder<Event>()
+                .setQuery(query, Event::class.java)
+                .setLifecycleOwner(this)
+                .build()
 
-    override fun onStart() {
-        super.onStart()
-        favoriteAdapter.startListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        favoriteAdapter.stopListening()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+            favoriteAdapter = FavoriteAdapter(requireContext(), options)
+            recyclerViewFavorites.adapter = favoriteAdapter
+        }
     }
 }

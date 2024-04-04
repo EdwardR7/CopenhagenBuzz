@@ -14,8 +14,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 class EventAdapter(
     context: Context,
     private val dataViewModel: DataViewModel,
-    options: FirebaseListOptions<Event>,
-    private val ref: Query
+    options: FirebaseListOptions<Event>
 ) : FirebaseListAdapter<Event>(options) {
 
     override fun populateView(v: View, model: Event, position: Int) {
@@ -30,6 +29,7 @@ class EventAdapter(
         typeTextView.text = model.eventType
         descTextView.text = model.eventDescription
 
+        favoriteButton.isChecked = model.isFavorite
         favoriteButton.setOnCheckedChangeListener { _, isChecked ->
             model.isFavorite = isChecked
             dataViewModel.onFavoriteClicked(model)

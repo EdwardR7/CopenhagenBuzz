@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.firebase.ui.database.FirebaseListOptions
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
 import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.EventAdapter
+import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
@@ -33,21 +37,23 @@ class TimelineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Firebase query to fetch all events from the database ordered by startDate
-        val query = FirebaseDatabase.getInstance().reference.child("events").orderByChild("eventDate")
+        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+            val query = Firebase.database(DATABASE_URL!!).reference
+                .child("events")
+                .child(userId)
+                .orderByChild("eventDate")
 
-        // Configure FirebaseListOptions
-        val options = FirebaseListOptions.Builder<Event>()
-            .setLayout(R.layout.event_row_item)
-            .setQuery(query, Event::class.java)
-            .setLifecycleOwner(viewLifecycleOwner)
-            .build()
+            val options = FirebaseListOptions.Builder<Event>()
+                .setLayout(R.layout.event_row_item)
+                .setQuery(query, Event::class.java)
+                .setLifecycleOwner(this)
+                .build()
 
-        // Initialize EventAdapter with FirebaseListOptions
-        eventAdapter = EventAdapter(requireContext(), dataViewModel, options, query)
+            eventAdapter = EventAdapter(requireContext(), dataViewModel, options)
 
-        // Set the adapter to the ListView
-        binding.listViewEvents.adapter = eventAdapter
+            // Set the adapter to the ListView
+            binding.listViewEvents.adapter = eventAdapter
+        }
     }
 
     override fun onDestroyView() {

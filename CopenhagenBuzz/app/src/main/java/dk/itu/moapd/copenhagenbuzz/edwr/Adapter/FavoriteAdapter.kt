@@ -1,3 +1,5 @@
+package dk.itu.moapd.copenhagenbuzz.edwr.Adapter
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -6,13 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 
 class FavoriteAdapter(
-    options: FirebaseRecyclerOptions<Event>,
-    private val context: Context
+    private val context: Context,
+    options: FirebaseRecyclerOptions<Event>
 ) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

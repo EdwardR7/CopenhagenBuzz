@@ -4,6 +4,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.R
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseAuth
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -46,22 +47,29 @@ class LoginActivity : AppCompatActivity() {
         signInLauncher.launch(signInIntent)
     }
 
-    private fun onSignInResult(
-        result: FirebaseAuthUIAuthenticationResult
-    ) {
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         when (result.resultCode) {
             RESULT_OK -> {
-                // Successfully signed in.
-                showSnackBar("User logged in the app.")
-                startMainActivity()
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null && user.isAnonymous) {
+                    // Successfully signed in as an anonymous user.
+                    showSnackBar("Anonymous user logged in the app.")
+                    startMainActivity()
+                } else {
+                    // Signed in as a non-anonymous user.
+                    showSnackBar("User logged in the app.")
+                    startMainActivity()
+                }
             }
-
             else -> {
-                // Sign in failed.
-                showSnackBar("Authentication failed.")
+                // Sign in failed. If response is available, show the error message
+                result.idpResponse?.error?.let { error ->
+                    showSnackBar("Authentication failed: $error")
+                } ?: run {
+                    showSnackBar("Authentication failed.")
+                }
             }
-        }
-    }
+    }}
 
     private fun showSnackBar(message: String) {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()

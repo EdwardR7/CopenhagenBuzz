@@ -14,7 +14,7 @@
         android:name=".MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".View.MainActivity"
+            android:name=".View.Activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.CopenhagenBuzz">
             <!-- Add intent filter for MainActivity -->
@@ -25,12 +25,8 @@
         </activity>
 
         <activity
-            android:name=".View.LoginActivity"
+            android:name=".View.Activity.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.CopenhagenBuzz" />
-
-        <activity
-            android:name=".View.AddEventFragment"
-            android:exported="true" />
     </application>
 </manifest>

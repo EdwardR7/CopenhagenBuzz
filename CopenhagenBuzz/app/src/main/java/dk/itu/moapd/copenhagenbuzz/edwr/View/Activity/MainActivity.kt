@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dk.itu.moapd.copenhagenbuzz.edwr.View
+package dk.itu.moapd.copenhagenbuzz.edwr.View.Activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -36,6 +36,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dk.itu.moapd.copenhagenbuzz.edwr.R
+import dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.UserInfoDialogFragment
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityMainBinding
 
 /**

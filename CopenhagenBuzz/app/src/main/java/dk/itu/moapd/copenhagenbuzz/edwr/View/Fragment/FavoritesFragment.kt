@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.edwr.View
+package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
 
 import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.FavoriteAdapter
 import android.os.Bundle
@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.database
 import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
-import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentFavoritesBinding
 
 class FavoritesFragment : Fragment() {

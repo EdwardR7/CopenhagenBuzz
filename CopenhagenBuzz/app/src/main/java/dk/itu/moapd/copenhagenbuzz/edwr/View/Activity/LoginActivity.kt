@@ -1,6 +1,5 @@
-package dk.itu.moapd.copenhagenbuzz.edwr.View
+package dk.itu.moapd.copenhagenbuzz.edwr.View.Activity
 
-import dk.itu.moapd.copenhagenbuzz.edwr.R
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,8 +8,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.snackbar.Snackbar
-import dk.itu.moapd.copenhagenbuzz.edwr.View.MainActivity
-import dk.itu.moapd.copenhagenbuzz.edwr.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 

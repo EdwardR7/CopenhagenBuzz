@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.edwr.View
+package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

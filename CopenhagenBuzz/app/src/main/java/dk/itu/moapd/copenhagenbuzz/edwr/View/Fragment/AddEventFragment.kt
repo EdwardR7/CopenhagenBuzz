@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.edwr.View
+package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
 
 import com.google.firebase.auth.FirebaseAuth
 import android.os.Bundle

@@ -6,22 +6,22 @@
 
     <fragment
         android:id="@+id/TimelineFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.TimelineFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.TimelineFragment"
         android:label="Timeline" />
 
     <fragment
         android:id="@+id/FavoritesFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.FavoritesFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.FavoritesFragment"
         android:label="Favorites" />
 
     <fragment
         android:id="@+id/MapsFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.MapsFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.MapsFragment"
         android:label="Maps" />
 
     <fragment
         android:id="@+id/AddEventFragment"
-        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.AddEventFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.AddEventFragment"
         android:label="AddEvent" />
 
     <action

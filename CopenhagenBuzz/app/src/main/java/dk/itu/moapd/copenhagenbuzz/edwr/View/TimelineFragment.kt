@@ -1,5 +1,4 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +6,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.firebase.ui.database.FirebaseListOptions
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.database
-import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.EventAdapter
+import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
-import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 
 class TimelineFragment : Fragment() {
 
@@ -38,18 +36,27 @@ class TimelineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
-            val query = Firebase.database(DATABASE_URL!!).reference
+            val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
                 .child("events")
                 .child(userId)
                 .orderByChild("eventDate")
 
             val options = FirebaseListOptions.Builder<Event>()
-                .setLayout(R.layout.event_row_item)
+                .setLayout(R.layout.event_row_item) //Layout
                 .setQuery(query, Event::class.java)
                 .setLifecycleOwner(this)
                 .build()
 
-            eventAdapter = EventAdapter(requireContext(), dataViewModel, options)
+            eventAdapter = EventAdapter(requireContext(), options, object : OnItemClickListener {
+                override fun onItemClick(event: Event) {
+                    // Handle item click here if needed
+                }
+
+                override fun onFavoriteClick(event: Event, isFavorite: Boolean) {
+                    dataViewModel.onFavoriteClicked(event)
+                    dataViewModel.fetchFavorites()
+                }
+            })
 
             // Set the adapter to the ListView
             binding.listViewEvents.adapter = eventAdapter

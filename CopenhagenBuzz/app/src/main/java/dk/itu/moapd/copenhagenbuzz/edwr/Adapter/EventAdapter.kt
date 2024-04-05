@@ -9,12 +9,16 @@ import com.firebase.ui.database.FirebaseListOptions
 import com.google.firebase.database.Query
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
-import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
+
+interface OnItemClickListener {
+    fun onItemClick(event: Event)
+    fun onFavoriteClick(event: Event, isFavorite: Boolean)
+}
 
 class EventAdapter(
     context: Context,
-    private val dataViewModel: DataViewModel,
-    options: FirebaseListOptions<Event>
+    options: FirebaseListOptions<Event>,
+    private val itemClickListener: OnItemClickListener
 ) : FirebaseListAdapter<Event>(options) {
 
     override fun populateView(v: View, model: Event, position: Int) {
@@ -31,9 +35,11 @@ class EventAdapter(
 
         favoriteButton.isChecked = model.isFavorite
         favoriteButton.setOnCheckedChangeListener { _, isChecked ->
-            model.isFavorite = isChecked
-            dataViewModel.onFavoriteClicked(model)
-            dataViewModel.fetchFavorites()
+            itemClickListener.onFavoriteClick(model, isChecked)
+        }
+
+        v.setOnClickListener {
+            itemClickListener.onItemClick(model)
         }
     }
 }

@@ -25,47 +25,35 @@ class DataViewModel : ViewModel() {
 
     init {
         fetchEvents()
+        fetchFavorites()
     }
 
-    private fun fetchEvents() { //Not directly needed in TimeLine for now
+    private fun fetchEvents() {
         val userId = getUserId() ?: return
         val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
             .child("events")
             .child(userId)
             .orderByChild("eventDate")
-
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val eventsList = mutableListOf<Event>()
-                for (eventSnapshot in snapshot.children) {
-                    val event = eventSnapshot.getValue(Event::class.java)
-                    event?.let { eventsList.add(it) }
-                }
-                _events.value = eventsList
-                updateFavorites(eventsList.filter { it.isFavorite })
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle database error
-            }
-        })
     }
 
     fun fetchFavorites() {
-        viewModelScope.launch {
-            val eventsList = _events.value.orEmpty()
-            updateFavorites(eventsList.filter { it.isFavorite })
-        }
+        val userId = getUserId() ?: return
+        val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
+            .child("events")
+            .child(userId)
+            .orderByChild("isFavorite")
+            .equalTo(true)
     }
 
-    private fun updateFavorites(newFavorites: List<Event>) {
-        _favorites.value = newFavorites
-    }
 
     fun onFavoriteClicked(event: Event) {
-        val isFavorite = event.isFavorite
-        event.isFavorite = !isFavorite
+        event.isFavorite = !event.isFavorite
         updateEvent(event)
+        if (event.isFavorite) {
+            addFavorite(event)
+        } else {
+            removeFavorite(event)
+        }
     }
 
     private fun updateEvent(event: Event) {
@@ -73,8 +61,26 @@ class DataViewModel : ViewModel() {
         val eventRef = FirebaseDatabase.getInstance().reference
             .child("events")
             .child(userId)
-           // .child(event.id)
+            .child(event.eventId ?: "") // Use the eventId to reference the specific event
         eventRef.setValue(event)
+    }
+
+    private fun addFavorite(event: Event) {
+        val userId = getUserId() ?: return
+        val favoriteRef = FirebaseDatabase.getInstance().reference
+            .child("favorites")
+            .child(userId)
+            .child(event.eventId ?: "") // Use the eventId to reference the specific event
+        favoriteRef.setValue(event)
+    }
+
+    private fun removeFavorite(event: Event) {
+        val userId = getUserId() ?: return
+        val favoriteRef = FirebaseDatabase.getInstance().reference
+            .child("favorites")
+            .child(userId)
+            .child(event.eventId ?: "") // Use the eventId to reference the specific event
+        favoriteRef.removeValue()
     }
 
     private fun getUserId(): String? {

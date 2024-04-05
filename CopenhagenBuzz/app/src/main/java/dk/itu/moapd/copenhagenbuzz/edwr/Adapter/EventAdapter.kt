@@ -34,8 +34,10 @@ class EventAdapter(
         descTextView.text = model.eventDescription
 
         favoriteButton.isChecked = model.isFavorite
-        favoriteButton.setOnCheckedChangeListener { _, isChecked ->
-            itemClickListener.onFavoriteClick(model, isChecked)
+        favoriteButton.setOnCheckedChangeListener(null)
+        favoriteButton.setOnClickListener {
+            val isFavorite = (it as ToggleButton).isChecked
+            itemClickListener.onFavoriteClick(model, isFavorite)
         }
 
         v.setOnClickListener {

@@ -1,5 +1,7 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
+
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,12 +35,13 @@ class TimelineFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
-        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+      FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
             val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
                 .child("events")
-                .child(userId)
+                //.child(userId)
                 .orderByChild("eventDate")
 
             val options = FirebaseListOptions.Builder<Event>()

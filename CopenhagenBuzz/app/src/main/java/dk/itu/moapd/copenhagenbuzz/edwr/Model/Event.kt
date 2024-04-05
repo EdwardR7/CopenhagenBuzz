@@ -33,12 +33,13 @@ package dk.itu.moapd.copenhagenbuzz.edwr.Model
  * @property eventDescription A description providing additional details about the event.
  * @constructor Creates an empty event
   */
-    data class Event(var eventName: String,
-                     var eventLocation: String,
-                     var eventDate: Long,
-                     var eventType: String,
-                     var eventDescription: String,
-                     var isFavorite: Boolean = false,
-                     var userId: String)
-
-//READ: We use these in AddEventFragment for now, hence var
+data class Event(
+    var eventName: String = "",
+    var eventLocation: String = "",
+    var eventDate: Long = 0,
+    var eventType: String = "",
+    var eventDescription: String = "",
+    var isFavorite: Boolean = false,
+    var userId: String = "",
+    val eventId: String? = null
+)

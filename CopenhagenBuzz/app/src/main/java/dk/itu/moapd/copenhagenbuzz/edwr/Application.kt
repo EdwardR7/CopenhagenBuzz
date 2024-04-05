@@ -2,6 +2,8 @@ package dk.itu.moapd.copenhagenbuzz.edwr
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Logger
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import io.github.cdimascio.dotenv.dotenv
@@ -16,6 +18,8 @@ val DATABASE_URL: String? = dotenv {
 class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
+        FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
+
 
         // Apply dynamic colors to activities if available.
         DynamicColors.applyToActivitiesIfAvailable(this)

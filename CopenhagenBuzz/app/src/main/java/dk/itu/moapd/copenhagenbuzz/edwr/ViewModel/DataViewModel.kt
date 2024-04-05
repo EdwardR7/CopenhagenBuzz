@@ -67,21 +67,22 @@ class DataViewModel : ViewModel() {
 
     private fun addFavorite(event: Event) {
         val userId = getUserId() ?: return
-        val favoriteRef = FirebaseDatabase.getInstance().reference
-            .child("favorites")
+        val eventRef = FirebaseDatabase.getInstance().reference
+            .child("events")
             .child(userId)
             .child(event.eventId ?: "") // Use the eventId to reference the specific event
-        favoriteRef.setValue(event)
+        eventRef.child("isFavorite").setValue(true)
     }
 
     private fun removeFavorite(event: Event) {
         val userId = getUserId() ?: return
-        val favoriteRef = FirebaseDatabase.getInstance().reference
-            .child("favorites")
+        val eventRef = FirebaseDatabase.getInstance().reference
+            .child("events")
             .child(userId)
             .child(event.eventId ?: "") // Use the eventId to reference the specific event
-        favoriteRef.removeValue()
+        eventRef.child("isFavorite").removeValue()
     }
+
 
     private fun getUserId(): String? {
         return FirebaseAuth.getInstance().currentUser?.uid

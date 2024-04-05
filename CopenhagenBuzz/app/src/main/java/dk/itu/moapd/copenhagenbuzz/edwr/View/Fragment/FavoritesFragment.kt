@@ -40,9 +40,9 @@ class FavoritesFragment : Fragment() {
             val query = FirebaseDatabase.getInstance(DATABASE_URL!!)
                 .reference
                 .child("events")
-                .child(uid)
+                //.child(uid)
                 .orderByChild("isFavorite")
-               // .equalTo(true)
+                .equalTo(true)
 
             val options = FirebaseRecyclerOptions.Builder<Event>()
                 .setQuery(query, Event::class.java)

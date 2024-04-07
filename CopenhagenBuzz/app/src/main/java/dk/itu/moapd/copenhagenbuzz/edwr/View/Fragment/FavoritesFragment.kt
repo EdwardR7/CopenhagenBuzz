@@ -35,10 +35,10 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
-            val query = Firebase.database(DATABASE_URL!!).reference
+            val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
                 .child("events")
-                .child(userId)
-                .orderByChild("isFavorite")
+                //.child(userId)
+                .orderByChild("favorite")
                 .equalTo(true)
 
             val options = FirebaseRecyclerOptions.Builder<Event>()
@@ -47,6 +47,15 @@ class FavoritesFragment : Fragment() {
                 .build()
 
             favoriteAdapter = FavoriteAdapter(requireContext(), options)
+
+            // Get a reference to the RecyclerView
+            val recyclerViewFavorites = binding.RecyclerViewFavorites
+
+            // Set layout manager for the RecyclerView
+            recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
+
+            // Set the adapter to the RecyclerView
+            recyclerViewFavorites.adapter = favoriteAdapter
         }
     }
 }

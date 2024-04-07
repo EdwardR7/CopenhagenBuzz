@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
 import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentFavoritesBinding
@@ -32,15 +34,10 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerViewFavorites = binding.RecyclerViewFavorites
-        recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
-
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        userId?.let { uid ->
-            val query = FirebaseDatabase.getInstance(DATABASE_URL!!)
-                .reference
+        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+            val query = Firebase.database(DATABASE_URL!!).reference
                 .child("events")
-                //.child(uid)
+                .child(userId)
                 .orderByChild("isFavorite")
                 .equalTo(true)
 
@@ -50,7 +47,6 @@ class FavoritesFragment : Fragment() {
                 .build()
 
             favoriteAdapter = FavoriteAdapter(requireContext(), options)
-            recyclerViewFavorites.adapter = favoriteAdapter
         }
     }
 }

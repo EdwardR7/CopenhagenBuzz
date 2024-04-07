@@ -27,7 +27,7 @@ class FavoriteAdapter(
         holder.bind(model)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(recyclerView: View) : RecyclerView.ViewHolder(recyclerView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.text_event_title)
         private val typeTextView: TextView = itemView.findViewById(R.id.text_event_type)
 

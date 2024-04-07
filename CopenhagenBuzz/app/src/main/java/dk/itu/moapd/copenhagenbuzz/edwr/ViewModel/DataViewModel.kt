@@ -14,26 +14,13 @@ import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import kotlinx.coroutines.launch
 
 class DataViewModel : ViewModel() {
-    private val _events = MutableLiveData<List<Event>>()
     private val _favorites = MutableLiveData<List<Event>>()
-
-    val events: LiveData<List<Event>>
-        get() = _events
 
     val favorites: LiveData<List<Event>>
         get() = _favorites
 
     init {
-        fetchEvents()
         fetchFavorites()
-    }
-
-    private fun fetchEvents() {
-        val userId = getUserId() ?: return
-        val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
-            .child("events")
-            .child(userId)
-            .orderByChild("eventDate")
     }
 
     fun fetchFavorites() {

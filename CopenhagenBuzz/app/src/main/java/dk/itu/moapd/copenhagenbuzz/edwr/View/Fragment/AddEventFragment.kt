@@ -1,76 +1,79 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
-
-import com.google.firebase.auth.FirebaseAuth
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
-import java.util.Calendar
-import java.util.TimeZone
+import java.util.*
 
 class AddEventFragment : Fragment() {
-    private val event: Event = Event("", "", 0, "", "",false,"")
     private var _binding: FragmentAddeventBinding? = null
     private val currentUser = FirebaseAuth.getInstance().currentUser
-    private val binding
+    private val binding get() = _binding!!
 
-        get() = requireNotNull(_binding) {
-            "Cannot access binding because it is null. Is the view visible?"
-        }
+    private var selectedDate: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentAddeventBinding.inflate(inflater, container, false).also {
-        _binding = it
-    }.root
+    ): View {
+        _binding = FragmentAddeventBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
-            // Listener for user interaction in the 'Event date' textfield.
-            editTextEventDate.apply {
-                keyListener = null
-                setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus)
-                        showDatePicker()
+        binding.editTextEventDate.setOnClickListener {
+            showDatePicker()
+        }
+
+        binding.addEventButton.setOnClickListener {
+            val eventName = binding.editTextEventName.text.toString().trim()
+            val eventLocation = binding.editTextEventLocation.text.toString().trim()
+            val eventType = binding.editEventType.text.toString().trim()
+            val eventDescription = binding.editTextEventDesc.text.toString().trim()
+
+            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty()) {
+                currentUser?.let { user ->
+                    val userId = user.uid
+                    val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
+                    val newEventKey = eventsRef.push().key
+
+                    val event = newEventKey?.let { it1 ->
+                        Event(
+                            eventId = it1,
+                            eventName = eventName,
+                            eventDescription = eventDescription,
+                            eventDate = selectedDate,
+                            eventLocation = eventLocation,
+                            eventType = eventType,
+                            isFavorite = false,
+                            userId = userId
+                        )
+                    }
+
+                    newEventKey?.let { key ->
+                        eventsRef.child(key).setValue(event).addOnSuccessListener {
+                            Snackbar.make(binding.root, "Event added successfully!", Snackbar.LENGTH_SHORT)
+                                .setAnchorView(binding.addEventButton).show()
+                        }
+                    }
                 }
+            } else {
+                Snackbar.make(binding.root, "Please fill all the fields", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.addEventButton).show()
             }
-
-            currentUser?.let {
-                addEventButton.setOnClickListener {
-                Log.d("AddEventFragment", "Add event button clicked")
-                // Update the object attributes.
-                event.eventName = editTextEventName.text.toString().trim()
-                event.eventLocation = editTextEventLocation.text.toString().trim()
-                event.eventType = editEventType.text.toString().trim()
-                event.eventDescription = editTextEventDesc.text.toString().trim()
-
-                // Check if all required fields are filled
-                if (event.eventName.isNotEmpty() &&
-                    event.eventLocation.isNotEmpty() &&
-                    event.eventType.isNotEmpty() &&
-                    event.eventDescription.isNotEmpty()) {
-
-                    // Show a Snackbar
-                    Snackbar.make(binding.root, "Event added successfully!", Snackbar.LENGTH_SHORT)
-                        .setAnchorView(binding.addEventButton)
-                        .show()
-                } else {
-                    Snackbar.make(binding.root, "Please fill all the fields", Snackbar.LENGTH_SHORT)
-                        .setAnchorView(binding.addEventButton)
-                        .show()
-                }
-            }}
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -79,17 +82,12 @@ class AddEventFragment : Fragment() {
     private fun showDatePicker() {
         val builder = MaterialDatePicker.Builder.datePicker()
         val datePicker = builder.build()
-        datePicker.addOnPositiveButtonClickListener { selection ->
-            // Handle date selection
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-            calendar.timeInMillis = selection
-            val selectedDate = calendar.time
-
-            // Update the event object with the selected date
-            event.eventDate = selectedDate.time
-
-            // Update the EditText with the selected date using the binding object
-            binding.editTextEventDate.setText(selectedDate.toString())
+        datePicker.addOnPositiveButtonClickListener {
+            selectedDate = it
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = it
+            val dateString = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.YEAR)}"
+            binding.editTextEventDate.setText(dateString)
         }
         datePicker.show(requireActivity().supportFragmentManager, "DATE_PICKER")
     }

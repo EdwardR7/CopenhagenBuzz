@@ -25,11 +25,13 @@ class EventAdapter(
         val titleTextView: TextView = v.findViewById(R.id.text_event_title)
         val locationTextView: TextView = v.findViewById(R.id.text_event_location)
         val typeTextView: TextView = v.findViewById(R.id.text_event_type)
+        val eventDate: TextView = v.findViewById(R.id.text_field_event_date)
         val descTextView: TextView = v.findViewById(R.id.text_event_description)
         val favoriteButton: ToggleButton = v.findViewById(R.id.button_favorite)
 
         titleTextView.text = model.eventName
         locationTextView.text = model.eventLocation
+        eventDate.text = model.eventDate.toString()
         typeTextView.text = model.eventType
         descTextView.text = model.eventDescription
 

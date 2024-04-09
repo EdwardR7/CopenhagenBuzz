@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/TimelineFragment">
-
+    <fragment
+        android:id="@+id/UpdateEventFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.UpdateEventFragment"
+        android:label="Update Event"/>
     <fragment
         android:id="@+id/TimelineFragment"
         android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.TimelineFragment"
@@ -23,7 +26,9 @@
         android:id="@+id/AddEventFragment"
         android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.AddEventFragment"
         android:label="AddEvent" />
-
+    <action
+        android:id="@id/action_mapsFragment_to_AddEventFragment"
+        app:destination="@id/UpdateEventFragment"/>
     <action
         android:id="@+id/action_timelineFragment_to_favoritesFragment"
         app:destination="@id/FavoritesFragment" />

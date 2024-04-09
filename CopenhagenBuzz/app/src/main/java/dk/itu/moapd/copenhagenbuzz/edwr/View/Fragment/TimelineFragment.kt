@@ -1,7 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,8 @@ import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
-import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
 import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
+import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
 
 class TimelineFragment : Fragment() {
 
@@ -52,7 +51,14 @@ class TimelineFragment : Fragment() {
 
             eventAdapter = EventAdapter(requireContext(), options, object : OnItemClickListener {
                 override fun onItemClick(event: Event) {
-                    // Handle item click here if needed
+                    val bundle = Bundle().apply {
+                        // Put event details into the bundle
+                        putString("eventId", event.eventId)
+                        putString("eventName", event.eventName)
+                        // Put other event details as needed
+                    }
+                    val updateEventFragment = UpdateEventFragment()
+                    updateEventFragment.arguments = bundle
                 }
 
                 override fun onFavoriteClick(event: Event, isFavorite: Boolean) {

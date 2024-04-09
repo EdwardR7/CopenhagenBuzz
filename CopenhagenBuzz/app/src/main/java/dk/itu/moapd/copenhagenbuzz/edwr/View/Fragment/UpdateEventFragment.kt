@@ -1,4 +1,5 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ class UpdateEventFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var selectedDate: Long = 0
+    private var eventId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,65 +34,66 @@ class UpdateEventFragment : Fragment() {
 
         val bundle = arguments
 
-            val eventId = bundle!!.getString("eventId")
-            val evenDesc =  bundle.getString("eventDescription")
-            val eventLocationX =  bundle.getString("eventLocation")
-            val eventTypeX = bundle.getString("eventType")
+        eventId = bundle?.getString("eventId")
 
-            binding.editTextEventDate.setOnClickListener {
-                showDatePicker()
-            }
+        binding.editTextEventDate.setOnClickListener {
+            showDatePicker()
+        }
 
-            binding.addEventButton.setOnClickListener {
-                val eventName = binding.editTextEventName.text.toString().trim()
-                val eventLocation = binding.editTextEventLocation.text.toString().trim()
-                val eventType = binding.editEventType.text.toString().trim()
-                val eventDescription = binding.editTextEventDesc.text.toString().trim()
+        binding.addEventButton.setOnClickListener {
+            val eventName = binding.editTextEventName.text.toString().trim()
+            val eventLocation = binding.editTextEventLocation.text.toString().trim()
+            val eventType = binding.editEventType.text.toString().trim()
+            val eventDescription = binding.editTextEventDesc.text.toString().trim()
 
-                if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
-                    currentUser!!.let { user ->
-                        val userId = user.uid
-                        val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
-                        val newEventKey = eventsRef.push().key
+            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true && eventId != null) {
+                val userId = currentUser?.uid
+                val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
 
-                        val event = newEventKey?.let { it1 ->
-                            if (eventId != null && evenDesc != null && eventLocationX != null && eventTypeX != null) {
-                                Event(
-                                    eventId = eventId,
-                                    eventName = eventName,
-                                    eventDescription = evenDesc,
-                                    eventDate = selectedDate,
-                                    eventLocation = eventLocationX,
-                                    eventType = eventTypeX,
-                                    isFavorite = false,
-                                    userId = userId
-                                )
-                            }
-                        }
+                val updatedEvent = userId?.let { it1 ->
+                    Event(
+                        eventId = eventId!!,
+                        eventName = eventName,
+                        eventDescription = eventDescription,
+                        eventDate = selectedDate,
+                        eventLocation = eventLocation,
+                        eventType = eventType,
+                        isFavorite = false,
+                        userId = it1
+                    )
+                }
 
-                        newEventKey?.let { key ->
-                            eventsRef.child(key).setValue(event).addOnSuccessListener {
-                                Snackbar.make(
-                                    binding.root,
-                                    "Event added successfully!",
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                    .setAnchorView(binding.addEventButton).show()
-                            }
-                        }
-                    }
-                } else if (currentUser?.isAnonymous == true) {
+                eventsRef.child(eventId!!).setValue(updatedEvent).addOnSuccessListener {
                     Snackbar.make(
                         binding.root,
-                        "You cannot post as an anonymous user, please login or signup",
+                        "Event updated successfully!",
                         Snackbar.LENGTH_SHORT
                     )
                         .setAnchorView(binding.addEventButton).show()
-                } else {
-                    Snackbar.make(binding.root, "Please fill all the fields", Snackbar.LENGTH_SHORT)
+                }.addOnFailureListener { exception ->
+                    Snackbar.make(
+                        binding.root,
+                        "Failed to update event: ${exception.message}",
+                        Snackbar.LENGTH_SHORT
+                    )
                         .setAnchorView(binding.addEventButton).show()
                 }
+            } else if (currentUser?.isAnonymous == true) {
+                Snackbar.make(
+                    binding.root,
+                    "You cannot update as an anonymous user, please login or signup",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAnchorView(binding.addEventButton).show()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    "Please fill all the fields",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAnchorView(binding.addEventButton).show()
             }
+        }
     }
 
     override fun onDestroyView() {

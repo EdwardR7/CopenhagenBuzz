@@ -30,50 +30,67 @@ class UpdateEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.editTextEventDate.setOnClickListener {
-            showDatePicker()
-        }
+        val bundle = arguments
 
-        binding.addEventButton.setOnClickListener {
-            val eventName = binding.editTextEventName.text.toString().trim()
-            val eventLocation = binding.editTextEventLocation.text.toString().trim()
-            val eventType = binding.editEventType.text.toString().trim()
-            val eventDescription = binding.editTextEventDesc.text.toString().trim()
+            val eventId = bundle!!.getString("eventId")
+            val evenDesc =  bundle.getString("eventDescription")
+            val eventLocationX =  bundle.getString("eventLocation")
+            val eventTypeX = bundle.getString("eventType")
 
-            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
-                currentUser!!.let { user ->
-                    val userId = user.uid
-                    val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
-                    val newEventKey = eventsRef.push().key
+            binding.editTextEventDate.setOnClickListener {
+                showDatePicker()
+            }
 
-                    val event = newEventKey?.let { it1 ->
-                        Event(
-                            eventId = it1,
-                            eventName = eventName,
-                            eventDescription = eventDescription,
-                            eventDate = selectedDate,
-                            eventLocation = eventLocation,
-                            eventType = eventType,
-                            isFavorite = false,
-                            userId = userId
-                        )
-                    }
+            binding.addEventButton.setOnClickListener {
+                val eventName = binding.editTextEventName.text.toString().trim()
+                val eventLocation = binding.editTextEventLocation.text.toString().trim()
+                val eventType = binding.editEventType.text.toString().trim()
+                val eventDescription = binding.editTextEventDesc.text.toString().trim()
 
-                    newEventKey?.let { key ->
-                        eventsRef.child(key).setValue(event).addOnSuccessListener {
-                            Snackbar.make(binding.root, "Event added successfully!", Snackbar.LENGTH_SHORT)
-                                .setAnchorView(binding.addEventButton).show()
+                if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
+                    currentUser!!.let { user ->
+                        val userId = user.uid
+                        val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
+                        val newEventKey = eventsRef.push().key
+
+                        val event = newEventKey?.let { it1 ->
+                            if (eventId != null && evenDesc != null && eventLocationX != null && eventTypeX != null) {
+                                Event(
+                                    eventId = eventId,
+                                    eventName = eventName,
+                                    eventDescription = evenDesc,
+                                    eventDate = selectedDate,
+                                    eventLocation = eventLocationX,
+                                    eventType = eventTypeX,
+                                    isFavorite = false,
+                                    userId = userId
+                                )
+                            }
+                        }
+
+                        newEventKey?.let { key ->
+                            eventsRef.child(key).setValue(event).addOnSuccessListener {
+                                Snackbar.make(
+                                    binding.root,
+                                    "Event added successfully!",
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setAnchorView(binding.addEventButton).show()
+                            }
                         }
                     }
+                } else if (currentUser?.isAnonymous == true) {
+                    Snackbar.make(
+                        binding.root,
+                        "You cannot post as an anonymous user, please login or signup",
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setAnchorView(binding.addEventButton).show()
+                } else {
+                    Snackbar.make(binding.root, "Please fill all the fields", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(binding.addEventButton).show()
                 }
-            } else if(currentUser?.isAnonymous == true){
-                Snackbar.make(binding.root, "You cannot post as an anonymous user, please login or signup", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.addEventButton).show()
-            } else {
-                Snackbar.make(binding.root, "Please fill all the fields", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.addEventButton).show()
             }
-        }
     }
 
     override fun onDestroyView() {

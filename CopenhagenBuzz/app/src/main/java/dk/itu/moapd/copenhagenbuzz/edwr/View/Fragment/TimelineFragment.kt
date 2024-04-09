@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.database.FirebaseListOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -19,6 +21,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentTimelineBinding
 
 class TimelineFragment : Fragment() {
 
+    private lateinit var navController: NavController
     private var _binding: FragmentTimelineBinding? = null
     private val binding get() = _binding!!
 
@@ -54,11 +57,15 @@ class TimelineFragment : Fragment() {
                     val bundle = Bundle().apply {
                         // Put event details into the bundle
                         putString("eventId", event.eventId)
-                        putString("eventName", event.eventName)
+                        putString("eventDescription", event.eventDescription)
+                        putString("eventLocation", event.eventLocation)
+                        putString("eventType", event.eventType)
                         // Put other event details as needed
                     }
-                    val updateEventFragment = UpdateEventFragment()
-                    updateEventFragment.arguments = bundle
+                    val navHostFragment =
+                        parentFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                    navController = navHostFragment.navController
+                    navController.navigate(R.id.action_timelineFragment_to_UpdateEventFragment, bundle)
                 }
 
                 override fun onFavoriteClick(event: Event, isFavorite: Boolean) {

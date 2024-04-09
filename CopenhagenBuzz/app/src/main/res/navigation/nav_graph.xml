@@ -27,7 +27,7 @@
         android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.AddEventFragment"
         android:label="AddEvent" />
     <action
-        android:id="@id/action_mapsFragment_to_AddEventFragment"
+        android:id="@+id/action_timelineFragment_to_UpdateEventFragment"
         app:destination="@id/UpdateEventFragment"/>
     <action
         android:id="@+id/action_timelineFragment_to_favoritesFragment"

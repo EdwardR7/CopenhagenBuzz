@@ -148,13 +148,12 @@
                         android:background="@null"/>
 
                     <Button
-                        android:id="@+id/button_info"
+                        android:id="@+id/button_delete"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/infoButton"
+                        android:text="@string/deleteButton"
                         android:background="@null"/>
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

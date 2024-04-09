@@ -67,6 +67,10 @@ class TimelineFragment : Fragment() {
                     dataViewModel.onFavoriteClicked(event)
                     dataViewModel.fetchFavorites()
                 }
+
+                override fun onDeleteClick(event: Event) {
+                    dataViewModel.deleteEvent(event)
+                }
             })
 
             // Set the adapter to the ListView

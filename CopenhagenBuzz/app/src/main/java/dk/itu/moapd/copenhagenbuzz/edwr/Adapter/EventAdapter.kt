@@ -1,5 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.Adapter
 
+import android.content.ClipData.Item
 import android.content.Context
 import android.view.View
 import android.widget.Button
@@ -10,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.Query
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
@@ -19,6 +21,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 interface OnItemClickListener {
     fun onItemClick(event: Event)
     fun onFavoriteClick(event: Event, isFavorite: Boolean)
+    fun onDeleteClick(event: Event)
 }
 
 class EventAdapter(
@@ -37,6 +40,7 @@ class EventAdapter(
         val descTextView: TextView = v.findViewById(R.id.text_event_description)
         val favoriteButton: ToggleButton = v.findViewById(R.id.button_favorite)
         val editButton: Button = v.findViewById(R.id.button_edit)
+        val deleteButton: Button = v.findViewById(R.id.button_delete)
 
         titleTextView.text = model.eventName
         locationTextView.text = model.eventLocation
@@ -49,6 +53,10 @@ class EventAdapter(
         favoriteButton.setOnClickListener {
             val isFavorite = (it as ToggleButton).isChecked
             itemClickListener.onFavoriteClick(model, isFavorite)
+        }
+
+        deleteButton.setOnClickListener{
+            itemClickListener.onDeleteClick(model)
         }
 
         editButton.setOnClickListener {

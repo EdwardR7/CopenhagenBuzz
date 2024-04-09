@@ -28,7 +28,7 @@
     <string name="event_dateX">Event Date</string>
     <string name="event_description">Event Description</string>
     <string name="editButton">Edit</string>
-    <string name="infoButton">Info</string>
+    <string name="deleteButton">Delete</string>
     <string name="choose_login_method">Choose login method</string>
     <string name="loginText">Login</string>
     <string name="guestText">Guest</string>

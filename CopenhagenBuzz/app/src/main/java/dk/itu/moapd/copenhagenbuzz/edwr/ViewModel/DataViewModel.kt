@@ -31,11 +31,17 @@ class DataViewModel : ViewModel() {
             .orderByChild("isFavorite")
             .equalTo(true)
     }
-
-
     fun onFavoriteClicked(event: Event) {
         event.isFavorite = !event.isFavorite
         updateEvent(event)
+    }
+    fun deleteEvent(event: Event) {
+        val userId = getUserId() ?: return
+        val eventRef = FirebaseDatabase.getInstance().reference
+            .child("events")
+            //.child(userId)
+            .child(event.eventId ?: "")
+        eventRef.removeValue()
     }
 
     private fun updateEvent(event: Event) {

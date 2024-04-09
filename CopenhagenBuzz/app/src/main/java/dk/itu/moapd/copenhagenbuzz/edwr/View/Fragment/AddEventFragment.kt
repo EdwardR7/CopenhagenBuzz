@@ -41,8 +41,8 @@ class AddEventFragment : Fragment() {
             val eventType = binding.editEventType.text.toString().trim()
             val eventDescription = binding.editTextEventDesc.text.toString().trim()
 
-            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty()) {
-                currentUser?.let { user ->
+            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
+                currentUser!!.let { user ->
                     val userId = user.uid
                     val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
                     val newEventKey = eventsRef.push().key
@@ -67,6 +67,9 @@ class AddEventFragment : Fragment() {
                         }
                     }
                 }
+            } else if(currentUser?.isAnonymous == true){
+                Snackbar.make(binding.root, "You cannot post as an anonymous user, please login or signup", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.addEventButton).show()
             } else {
                 Snackbar.make(binding.root, "Please fill all the fields", Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.addEventButton).show()

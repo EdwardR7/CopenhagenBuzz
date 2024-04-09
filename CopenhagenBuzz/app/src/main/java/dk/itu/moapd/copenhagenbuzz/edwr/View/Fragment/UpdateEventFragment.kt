@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 import java.util.Calendar
 
@@ -33,68 +35,71 @@ class UpdateEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val bundle = arguments
-
         eventId = bundle?.getString("eventId")
 
-        binding.editTextEventDate.setOnClickListener {
-            showDatePicker()
-        }
+        _binding?.apply {
+            editTextEventDate.setOnClickListener {
+                showDatePicker()
+            }
 
-        binding.addEventButton.setOnClickListener {
-            val eventName = binding.editTextEventName.text.toString().trim()
-            val eventLocation = binding.editTextEventLocation.text.toString().trim()
-            val eventType = binding.editEventType.text.toString().trim()
-            val eventDescription = binding.editTextEventDesc.text.toString().trim()
+            addEventButton.setOnClickListener {
+                val eventName = editTextEventName.text.toString().trim()
+                val eventLocation = editTextEventLocation.text.toString().trim()
+                val eventType = editEventType.text.toString().trim()
+                val eventDescription = editTextEventDesc.text.toString().trim()
 
-            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true && eventId != null) {
-                val userId = currentUser?.uid
-                val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
+                if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true && eventId != null) {
+                    val userId = currentUser?.uid
+                    val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
 
-                val updatedEvent = userId?.let { it1 ->
-                    Event(
-                        eventId = eventId!!,
-                        eventName = eventName,
-                        eventDescription = eventDescription,
-                        eventDate = selectedDate,
-                        eventLocation = eventLocation,
-                        eventType = eventType,
-                        isFavorite = false,
-                        userId = it1
-                    )
-                }
+                    val updatedEvent = userId?.let { it1 ->
+                        Event(
+                            eventId = eventId!!,
+                            eventName = eventName,
+                            eventDescription = eventDescription,
+                            eventDate = selectedDate,
+                            eventLocation = eventLocation,
+                            eventType = eventType,
+                            isFavorite = false,
+                            userId = it1
+                        )
+                    }
 
-                eventsRef.child(eventId!!).setValue(updatedEvent).addOnSuccessListener {
+                    eventsRef.child(eventId!!).setValue(updatedEvent).addOnSuccessListener {
+                        findNavController().navigate(R.id.action_calendarFragment_to_timelineFragment, bundle)
+                        Snackbar.make(
+                            requireView(),
+                            "Event updated successfully!",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setAnchorView(addEventButton).show()
+                    }.addOnFailureListener { exception ->
+                        Snackbar.make(
+                            requireView(),
+                            "Failed to update event: ${exception.message}",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setAnchorView(addEventButton).show()
+                    }
+                } else if (currentUser?.isAnonymous == true) {
                     Snackbar.make(
-                        binding.root,
-                        "Event updated successfully!",
+                        requireView(),
+                        "You cannot update as an anonymous user, please login or signup",
                         Snackbar.LENGTH_SHORT
                     )
-                        .setAnchorView(binding.addEventButton).show()
-                }.addOnFailureListener { exception ->
+                        .setAnchorView(addEventButton).show()
+                } else {
                     Snackbar.make(
-                        binding.root,
-                        "Failed to update event: ${exception.message}",
+                        requireView(),
+                        "Please fill all the fields",
                         Snackbar.LENGTH_SHORT
                     )
-                        .setAnchorView(binding.addEventButton).show()
+                        .setAnchorView(addEventButton).show()
                 }
-            } else if (currentUser?.isAnonymous == true) {
-                Snackbar.make(
-                    binding.root,
-                    "You cannot update as an anonymous user, please login or signup",
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setAnchorView(binding.addEventButton).show()
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    "Please fill all the fields",
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setAnchorView(binding.addEventButton).show()
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

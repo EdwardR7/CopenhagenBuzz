@@ -1,10 +1,12 @@
 package dk.itu.moapd.copenhagenbuzz.edwr
 
 import android.app.Application
+import com.google.android.libraries.places.api.Places
 import com.google.android.material.color.DynamicColors
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Logger
 import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.BuildConfig
 import com.google.firebase.ktx.Firebase
 import io.github.cdimascio.dotenv.dotenv
 
@@ -18,6 +20,7 @@ val DATABASE_URL: String? = dotenv {
 class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
+        Places.initialize(this,BuildConfig.GOOGLE_MAPS_API_KEY)
         FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
 
 

@@ -29,5 +29,12 @@
             android:name=".View.Activity.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.CopenhagenBuzz" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}"
+            />
+
     </application>
+
 </manifest>

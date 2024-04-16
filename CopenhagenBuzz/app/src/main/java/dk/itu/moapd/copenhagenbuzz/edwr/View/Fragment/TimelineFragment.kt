@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.database.FirebaseListOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.EventAdapter
@@ -60,8 +60,14 @@ class TimelineFragment : Fragment() {
                         putString("eventId", event.eventId)
                         // Put other event details as needed
                     }
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if(event.userId == user?.uid){
                     findNavController().navigate(R.id.action_timelineFragment_to_UpdateEventFragment, bundle)
-                }
+                        } else {
+                        Snackbar.make(binding.root, "You cannot edit another users event",Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.button_edit).show()
+                    }
+                    }
 
                 override fun onFavoriteClick(event: Event, isFavorite: Boolean) {
                     dataViewModel.onFavoriteClicked(event)
@@ -69,7 +75,13 @@ class TimelineFragment : Fragment() {
                 }
 
                 override fun onDeleteClick(event: Event) {
-                    dataViewModel.deleteEvent(event)
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if (event.userId == user?.uid) {
+                        dataViewModel.deleteEvent(event)
+                    } else {
+                        Snackbar.make(binding.root, "You cannot delete another users event",Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.button_delete).show()
+                    }
                 }
             })
 
@@ -77,6 +89,8 @@ class TimelineFragment : Fragment() {
             binding.listViewEvents.adapter = eventAdapter
         }
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

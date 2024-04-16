@@ -20,7 +20,7 @@ val DATABASE_URL: String? = dotenv {
 class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
-        Places.initialize(this,BuildConfig.GOOGLE_MAPS_API_KEY)
+        //Places.initialize(this,BuildConfig.GOOGLE_MAPS_API_KEY)
         FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
 
 

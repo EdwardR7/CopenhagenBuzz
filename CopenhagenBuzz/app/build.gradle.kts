@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.android")
-    id("com.google.secrets_gradle_plugin") version "0.4"
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     }
 
 android {
@@ -66,4 +66,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation ("io.github.cdimascio:java-dotenv:5.2.2")
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 }

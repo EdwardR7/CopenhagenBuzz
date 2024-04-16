@@ -70,8 +70,15 @@ class TimelineFragment : Fragment() {
                     }
 
                 override fun onFavoriteClick(event: Event, isFavorite: Boolean) {
-                    dataViewModel.onFavoriteClicked(event)
-                    dataViewModel.fetchFavorites()
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if(user?.isAnonymous != true) {
+                        dataViewModel.onFavoriteClicked(event)
+                        dataViewModel.fetchFavorites()
+
+                    } else {
+                        Snackbar.make(binding.root, "You must login to favorite an event",Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.button_delete).show()
+                    }
                 }
 
                 override fun onDeleteClick(event: Event) {

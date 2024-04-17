@@ -43,7 +43,7 @@ class EventAdapter(
         val deleteButton: Button = v.findViewById(R.id.button_delete)
 
         titleTextView.text = model.eventName
-        locationTextView.text = model.eventLocation
+        locationTextView.text = model.eventLocation.address
         eventDate.text = model.eventDate.toString()
         typeTextView.text = model.eventType
         descTextView.text = model.eventDescription

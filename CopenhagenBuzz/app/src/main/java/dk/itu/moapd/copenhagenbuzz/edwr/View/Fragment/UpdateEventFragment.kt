@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.EventLocation
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 import java.util.Calendar
@@ -58,7 +59,7 @@ class UpdateEventFragment : Fragment() {
                             eventName = eventName,
                             eventDescription = eventDescription,
                             eventDate = selectedDate,
-                            eventLocation = eventLocation,
+                            eventLocation = EventLocation(),
                             eventType = eventType,
                             isFavorite = false,
                             userId = it1

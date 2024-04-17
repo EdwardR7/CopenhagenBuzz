@@ -35,7 +35,7 @@ package dk.itu.moapd.copenhagenbuzz.edwr.Model
   */
 data class Event(
     var eventName: String = "",
-    var eventLocation: String = "",
+    var eventLocation: EventLocation = EventLocation(),
     var eventDate: Long = 0,
     var eventType: String = "",
     var eventDescription: String = "",

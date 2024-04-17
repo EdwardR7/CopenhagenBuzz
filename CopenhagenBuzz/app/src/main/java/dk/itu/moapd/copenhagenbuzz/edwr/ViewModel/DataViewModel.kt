@@ -15,9 +15,13 @@ import kotlinx.coroutines.launch
 
 class DataViewModel : ViewModel() {
     private val _favorites = MutableLiveData<List<Event>>()
+    private val _eventLocation = MutableLiveData<String>()
 
     val favorites: LiveData<List<Event>>
         get() = _favorites
+
+    val eventLocation: LiveData<String>
+        get() = _eventLocation
 
     init {
         fetchFavorites()
@@ -55,5 +59,9 @@ class DataViewModel : ViewModel() {
 
     private fun getUserId(): String? {
         return FirebaseAuth.getInstance().currentUser?.uid
+    }
+
+    fun setEventLocation(location: String) {
+        _eventLocation.value = location
     }
 }

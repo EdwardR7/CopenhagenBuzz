@@ -1,4 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.EventLocation
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 import java.util.*
 
@@ -41,31 +44,44 @@ class AddEventFragment : Fragment() {
             val eventType = binding.editEventType.text.toString().trim()
             val eventDescription = binding.editTextEventDesc.text.toString().trim()
 
-            if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
-                currentUser!!.let { user ->
-                    val userId = user.uid
-                    val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
-                    val newEventKey = eventsRef.push().key
+            if (eventName.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
+                val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                val addresses = geocoder.getFromLocationName(eventLocation, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val latitude = addresses[0].latitude
+                    val longitude = addresses[0].longitude
+                    val address = addresses[0].getAddressLine(0)
 
-                    val event = newEventKey?.let { it1 ->
-                        Event(
-                            eventId = it1,
-                            eventName = eventName,
-                            eventDescription = eventDescription,
-                            eventDate = selectedDate,
-                            eventLocation = eventLocation,
-                            eventType = eventType,
-                            isFavorite = false,
-                            userId = userId
-                        )
-                    }
+                    // Proceed with adding the event
+                    currentUser!!.let { user ->
+                        val userId = user.uid
+                        val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
+                        val newEventKey = eventsRef.push().key
 
-                    newEventKey?.let { key ->
-                        eventsRef.child(key).setValue(event).addOnSuccessListener {
-                            Snackbar.make(binding.root, "Event added successfully!", Snackbar.LENGTH_SHORT)
-                                .setAnchorView(binding.addEventButton).show()
+                        val event = newEventKey?.let { it1 ->
+                            Event(
+                                eventId = it1,
+                                eventName = eventName,
+                                eventDescription = eventDescription,
+                                eventDate = selectedDate,
+                                eventLocation = EventLocation(latitude, longitude, address),
+                                eventType = eventType,
+                                isFavorite = false,
+                                userId = userId
+                            )
+                        }
+
+                        newEventKey?.let { key ->
+                            eventsRef.child(key).setValue(event).addOnSuccessListener {
+                                Snackbar.make(binding.root, "Event added successfully!", Snackbar.LENGTH_SHORT)
+                                    .setAnchorView(binding.addEventButton).show()
+                            }
                         }
                     }
+                } else {
+                    // Address not found, show error message
+                    Snackbar.make(binding.root, "Invalid location", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(binding.addEventButton).show()
                 }
             } else if(currentUser?.isAnonymous == true){
                 Snackbar.make(binding.root, "You cannot post as an anonymous user, please login or signup", Snackbar.LENGTH_SHORT)
@@ -95,3 +111,4 @@ class AddEventFragment : Fragment() {
         datePicker.show(requireActivity().supportFragmentManager, "DATE_PICKER")
     }
 }
+

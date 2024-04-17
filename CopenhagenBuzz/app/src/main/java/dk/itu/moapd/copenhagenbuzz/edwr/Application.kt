@@ -1,6 +1,9 @@
 package dk.itu.moapd.copenhagenbuzz.edwr
 
 import android.app.Application
+import android.util.Log
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.color.DynamicColors
 import com.google.firebase.database.FirebaseDatabase
@@ -17,13 +20,13 @@ val DATABASE_URL: String? = dotenv {
     filename = "env"
 }["DATABASE_URL"]
 
-class MyApplication: Application() {
+class MyApplication: Application(), OnMapsSdkInitializedCallback {
     override fun onCreate() {
         super.onCreate()
         //Places.initialize(this,BuildConfig.GOOGLE_MAPS_API_KEY)
         FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
 
-
+        MapsInitializer.initialize(this, MapsInitializer.Renderer.LATEST, this);
         // Apply dynamic colors to activities if available.
         DynamicColors.applyToActivitiesIfAvailable(this)
 
@@ -31,6 +34,17 @@ class MyApplication: Application() {
         if (DATABASE_URL != null) {
             Firebase.database(DATABASE_URL).setPersistenceEnabled(true)
             Firebase.database(DATABASE_URL).reference.keepSynced(true)
+        }
+    }
+    override fun onMapsSdkInitialized(renderer: MapsInitializer.Renderer) {
+        when (renderer) {
+            MapsInitializer.Renderer.LATEST -> { Log.d(TAG(),
+                "The latest version of the renderer is used.")
+            }
+            MapsInitializer.Renderer.LEGACY -> {
+                Log.d(TAG(),
+                    "The legacy version of the renderer is used.")
+            }
         }
     }
 }

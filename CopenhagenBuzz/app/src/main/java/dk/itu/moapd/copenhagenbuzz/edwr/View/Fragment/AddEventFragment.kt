@@ -44,7 +44,7 @@ class AddEventFragment : Fragment() {
             val eventType = binding.editEventType.text.toString().trim()
             val eventDescription = binding.editTextEventDesc.text.toString().trim()
 
-            if (eventName.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true) {
+            if (eventName.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && eventLocation.isNotEmpty() && currentUser?.isAnonymous != true) {
                 val geocoder = Geocoder(requireContext(), Locale.getDefault())
                 val addresses = geocoder.getFromLocationName(eventLocation, 1)
                 if (!addresses.isNullOrEmpty()) {

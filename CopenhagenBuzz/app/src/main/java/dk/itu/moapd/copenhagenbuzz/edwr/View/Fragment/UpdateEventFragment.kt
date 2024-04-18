@@ -1,5 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
 
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import dk.itu.moapd.copenhagenbuzz.edwr.Model.EventLocation
 import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 import java.util.Calendar
+import java.util.Locale
 
 class UpdateEventFragment : Fragment() {
     private var _binding: FragmentAddeventBinding? = null
@@ -23,6 +25,10 @@ class UpdateEventFragment : Fragment() {
 
     private var selectedDate: Long = 0
     private var eventId: String? = null
+
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    private var address: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,41 +49,71 @@ class UpdateEventFragment : Fragment() {
                 showDatePicker()
             }
 
+            latitude = bundle?.getDouble("latitude") ?: 0.0
+            longitude = bundle?.getDouble("longitude") ?: 0.0
+            address = bundle?.getString("address") ?: ""
+
+            editTextEventLocation.setText(address)
+
+            editTextEventLocation.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    updateLocation(editTextEventLocation.text.toString())
+                }
+            }
+
             addEventButton.setOnClickListener {
                 val eventName = editTextEventName.text.toString().trim()
                 val eventLocation = editTextEventLocation.text.toString().trim()
                 val eventType = editEventType.text.toString().trim()
                 val eventDescription = editTextEventDesc.text.toString().trim()
 
-                if (eventName.isNotEmpty() && eventLocation.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && currentUser?.isAnonymous != true && eventId != null) {
+                if (eventName.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && eventLocation.isNotEmpty() && currentUser?.isAnonymous != true && eventId != null) {
                     val userId = currentUser?.uid
                     val eventsRef = FirebaseDatabase.getInstance().reference.child("events")
 
-                    val updatedEvent = userId?.let { it1 ->
-                        Event(
-                            eventId = eventId!!,
-                            eventName = eventName,
-                            eventDescription = eventDescription,
-                            eventDate = selectedDate,
-                            eventLocation = EventLocation(),
-                            eventType = eventType,
-                            isFavorite = false,
-                            userId = it1
-                        )
-                    }
+                    // Validate event location
+                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                    val addresses = geocoder.getFromLocationName(eventLocation, 1)
+                    if (!addresses.isNullOrEmpty()) {
+                        val location = addresses[0]
+                        latitude = location.latitude
+                        longitude = location.longitude
+                        address = location.getAddressLine(0)
 
-                    eventsRef.child(eventId!!).setValue(updatedEvent).addOnSuccessListener {
-                        findNavController().navigate(R.id.action_calendarFragment_to_timelineFragment, bundle)
+                        val updatedEvent = userId?.let { it1 ->
+                            Event(
+                                eventId = eventId!!,
+                                eventName = eventName,
+                                eventDescription = eventDescription,
+                                eventDate = selectedDate,
+                                eventLocation = EventLocation(latitude, longitude, address),
+                                eventType = eventType,
+                                isFavorite = false,
+                                userId = it1
+                            )
+                        }
+
+                        eventsRef.child(eventId!!).setValue(updatedEvent).addOnSuccessListener {
+                            findNavController().navigate(R.id.action_calendarFragment_to_timelineFragment, bundle)
+                            Snackbar.make(
+                                requireView(),
+                                "Event updated successfully!",
+                                Snackbar.LENGTH_SHORT
+                            )
+                                .setAnchorView(addEventButton).show()
+                        }.addOnFailureListener { exception ->
+                            Snackbar.make(
+                                requireView(),
+                                "Failed to update event: ${exception.message}",
+                                Snackbar.LENGTH_SHORT
+                            )
+                                .setAnchorView(addEventButton).show()
+                        }
+                    } else {
+                        // Invalid event location, show error message
                         Snackbar.make(
                             requireView(),
-                            "Event updated successfully!",
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .setAnchorView(addEventButton).show()
-                    }.addOnFailureListener { exception ->
-                        Snackbar.make(
-                            requireView(),
-                            "Failed to update event: ${exception.message}",
+                            "Invalid event location",
                             Snackbar.LENGTH_SHORT
                         )
                             .setAnchorView(addEventButton).show()
@@ -101,12 +137,6 @@ class UpdateEventFragment : Fragment() {
         }
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun showDatePicker() {
         val builder = MaterialDatePicker.Builder.datePicker()
         val datePicker = builder.build()
@@ -118,5 +148,21 @@ class UpdateEventFragment : Fragment() {
             binding.editTextEventDate.setText(dateString)
         }
         datePicker.show(requireActivity().supportFragmentManager, "DATE_PICKER")
+    }
+
+    private fun updateLocation(newAddress: String) {
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val addresses = geocoder.getFromLocationName(newAddress, 1)
+        if (!addresses.isNullOrEmpty()) {
+            val location = addresses[0]
+            latitude = location.latitude
+            longitude = location.longitude
+            address = location.getAddressLine(0)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

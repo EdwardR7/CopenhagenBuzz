@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
 import android.view.LayoutInflater
@@ -79,6 +80,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // Enable the location layer. Request the permission if it is not granted.
         if (checkPermission()) {
             googleMap.isMyLocationEnabled = true
+            locationService?.setLocationChangeListener(object : LocationService.LocationChangeListener {
+                override fun onLocationChanged(location: Location) {
+                    val userLocation = LatLng(location.latitude, location.longitude)
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                }
+            })
         } else {
             requestUserPermissions()
         }

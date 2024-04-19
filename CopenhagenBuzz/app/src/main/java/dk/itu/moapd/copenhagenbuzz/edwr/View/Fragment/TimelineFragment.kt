@@ -54,7 +54,7 @@ class TimelineFragment : Fragment() {
                 .build()
 
             eventAdapter = EventAdapter(requireContext(), options, object : OnItemClickListener {
-                override fun onItemClick(event: Event) {
+                override fun onEditClick(event: Event) {
                     val bundle = Bundle().apply {
                         // Put event details into the bundle
                         putString("eventId", event.eventId)
@@ -88,6 +88,14 @@ class TimelineFragment : Fragment() {
                     } else {
                         Snackbar.make(binding.root, "You cannot delete another users event",Snackbar.LENGTH_SHORT)
                             .setAnchorView(R.id.button_delete).show()
+                    }
+                }
+
+                override fun onItemClick(event: Event) {
+                    val bundle = Bundle().apply {
+                        // Put event details into the bundle
+                        putString("eventId", event.eventId)
+                        // Put other event details as needed
                     }
                 }
             })

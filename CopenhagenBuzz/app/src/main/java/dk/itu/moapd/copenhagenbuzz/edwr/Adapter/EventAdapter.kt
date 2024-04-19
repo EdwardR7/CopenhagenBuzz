@@ -22,6 +22,7 @@ interface OnItemClickListener {
     fun onItemClick(event: Event)
     fun onFavoriteClick(event: Event, isFavorite: Boolean)
     fun onDeleteClick(event: Event)
+    fun onEditClick(event: Event)
 }
 
 class EventAdapter(
@@ -60,9 +61,8 @@ class EventAdapter(
         }
 
         editButton.setOnClickListener {
-            itemClickListener.onItemClick(model) //UpdateEventFragment should be opened here
+            itemClickListener.onEditClick(model) //UpdateEventFragment should be opened here
         }
-
 
         v.setOnClickListener {
             itemClickListener.onItemClick(model)

@@ -11,7 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.firebase.ui.database.FirebaseListOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.EventAdapter
 import dk.itu.moapd.copenhagenbuzz.edwr.Adapter.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
@@ -99,10 +102,56 @@ class TimelineFragment : Fragment() {
                     }
                 }
             })
-
             // Set the adapter to the ListView
             binding.listViewEvents.adapter = eventAdapter
+
+          binding.filterButton.setOnClickListener {
+              // Call filterEvent method from DataViewModel
+              filterEvent(null)
+          }
         }
+    }
+
+    private fun filterEvent(eventType: String?) {
+        // Get a reference to the Firebase database
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("events")
+
+        // Create a base query without any filters
+        var query = databaseReference.orderByChild("eventType")
+
+        // Apply the filter if eventType is not null
+        eventType?.let { type ->
+            query = query.equalTo(type)
+        }
+
+        // Build the FirebaseListOptions
+        val options = FirebaseListOptions.Builder<Event>()
+            .setLayout(R.layout.event_row_item)
+            .setQuery(query, Event::class.java)
+            .setLifecycleOwner(this@TimelineFragment)
+            .build()
+
+        // Create a new EventAdapter with the filtered options
+        eventAdapter = EventAdapter(requireContext(), options, object : OnItemClickListener {
+            override fun onEditClick(event: Event) {
+                // Handle edit click
+            }
+
+            override fun onFavoriteClick(event: Event, isFavorite: Boolean) {
+                // Handle favorite click
+            }
+
+            override fun onDeleteClick(event: Event) {
+                // Handle delete click
+            }
+
+            override fun onItemClick(event: Event) {
+                // Handle item click
+            }
+        })
+
+        // Set the adapter to the ListView
+        binding.listViewEvents.adapter = eventAdapter
     }
 
 

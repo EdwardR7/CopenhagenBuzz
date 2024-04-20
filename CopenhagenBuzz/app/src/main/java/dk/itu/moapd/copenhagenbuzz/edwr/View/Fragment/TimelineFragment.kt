@@ -43,24 +43,12 @@ class TimelineFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
-            val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
-                .child("events")
-                .orderByChild("eventDate")
-
-            val options = FirebaseListOptions.Builder<Event>()
-                .setLayout(R.layout.event_row_item)
-                .setQuery(query, Event::class.java)
-                .setLifecycleOwner(this)
-                .build()
-
-            eventAdapter = EventAdapter(requireContext(), options, eventItemClickListener)
-            binding.listViewEvents.adapter = eventAdapter
+        fetchEvents()
 
             binding.filterButton.setOnClickListener {
                 if (isFiltered) {
                     // If already filtered, toggle to unfiltered state
-                    fetchEventsToToggle()
+                    fetchEvents()
                 } else {
                     filterEvent(null)
                 }
@@ -76,18 +64,20 @@ class TimelineFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (!newText.isNullOrBlank()) {
-                        filterEventByQuery(newText)
+                    if (!newText.isNullOrEmpty()) {
+                        searchEventByQuery(newText)
                     } else {
                         if (isFiltered) {
-                            fetchEventsToToggle()
+                            filterEvent(null)
+                        } else if (!isFiltered){ //Condition is not always true
+                            fetchEvents()
                         }
                     }
-                    return true
-                }
+                        return true
+                    }
             })
         }
-    }
+
 
     private fun filterEvent(eventType: String?) {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("events")
@@ -106,7 +96,7 @@ class TimelineFragment : Fragment() {
         binding.listViewEvents.adapter = eventAdapter
     }
 
-    private fun filterEventByQuery(query: String) {
+    private fun searchEventByQuery(query: String) {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("events")
         val eventQuery = databaseReference.orderByChild("eventName").startAt(query).endAt(query + "\uf8ff")
 
@@ -120,7 +110,7 @@ class TimelineFragment : Fragment() {
         binding.listViewEvents.adapter = eventAdapter
     }
 
-    private fun fetchEventsToToggle() {
+    private fun fetchEvents() {
         FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
             val query = FirebaseDatabase.getInstance(DATABASE_URL!!).reference
                 .child("events")

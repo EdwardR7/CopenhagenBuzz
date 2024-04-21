@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
+import dk.itu.moapd.copenhagenbuzz.edwr.Model.EventLocation
 import dk.itu.moapd.copenhagenbuzz.edwr.View.Service.LocationService
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentMapsBinding
 
@@ -74,6 +75,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
+        // Add a marker in IT University of Copenhagen and move the camera.
+        val itu = LatLng(55.6596, 12.5910)
+        googleMap.addMarker(MarkerOptions().position(itu).title("IT University of Copenhagen"))
+        // googleMap.moveCamera(CameraUpdateFactory.newLatLng(itu))
+
         // Move the Google Maps UI buttons under the OS top bar.
         googleMap.setPadding(0, 100, 0, 0)
 
@@ -81,9 +87,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         if (checkPermission()) {
             googleMap.isMyLocationEnabled = true
             locationService?.setLocationChangeListener(object : LocationService.LocationChangeListener {
-                override fun onLocationChanged(location: Location) {
-                    val userLocation = LatLng(location.latitude, location.longitude)
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                override fun onLocationChanged(latitude: Double, longitude: Double) {
+                    val userLocation = LatLng(latitude, longitude)
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation))
                 }
             })
         } else {

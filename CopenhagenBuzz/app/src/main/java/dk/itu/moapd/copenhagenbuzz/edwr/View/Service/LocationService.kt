@@ -19,6 +19,8 @@ class LocationService : Service() {
         private const val PACKAGE_NAME = "dk.itu.moapd.geolocation"
         internal const val ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST = "$PACKAGE_NAME.action.FOREGROUND_ONLY_LOCATION_BROADCAST"
         internal const val EXTRA_LOCATION = "$PACKAGE_NAME.extra.LOCATION"
+        internal const val EXTRA_LOCATION_LATITUDE = "$PACKAGE_NAME.extra.LOCATION_LATITUDE"
+        internal const val EXTRA_LOCATION_LONGITUDE = "$PACKAGE_NAME.extra.LOCATION_LONGITUDE"
     }
 
     inner class LocalBinder : Binder() {
@@ -39,12 +41,13 @@ class LocationService : Service() {
                 super.onLocationResult(locationResult)
                 val currentLocation = locationResult.lastLocation
                 val intent = Intent(ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
-                intent.putExtra(EXTRA_LOCATION, currentLocation)
+                currentLocation?.let { intent.putExtra(EXTRA_LOCATION_LATITUDE, it.latitude) }
+                currentLocation?.let { intent.putExtra(EXTRA_LOCATION_LONGITUDE, it.longitude) }
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
 
                 // Notify the registered listener of the new location
                 if (currentLocation != null) {
-                    locationChangeListener?.onLocationChanged(currentLocation)
+                    locationChangeListener?.onLocationChanged(currentLocation.latitude, currentLocation.longitude)
                 }
             }
         }
@@ -61,6 +64,6 @@ class LocationService : Service() {
 
     // Add this interface for components interested in location updates
     interface LocationChangeListener {
-        fun onLocationChanged(location: Location)
+        fun onLocationChanged(latitude: Double, longitude: Double)
     }
 }

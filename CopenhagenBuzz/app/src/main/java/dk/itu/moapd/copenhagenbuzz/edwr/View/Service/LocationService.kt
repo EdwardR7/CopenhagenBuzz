@@ -41,13 +41,15 @@ class LocationService : Service() {
                 super.onLocationResult(locationResult)
                 val currentLocation = locationResult.lastLocation
                 val intent = Intent(ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
-                currentLocation?.let { intent.putExtra(EXTRA_LOCATION_LATITUDE, it.latitude) }
-                currentLocation?.let { intent.putExtra(EXTRA_LOCATION_LONGITUDE, it.longitude) }
+                currentLocation?.let {
+                    intent.putExtra(EXTRA_LOCATION_LATITUDE, it.latitude)
+                    intent.putExtra(EXTRA_LOCATION_LONGITUDE, it.longitude)
+                }
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
 
                 // Notify the registered listener of the new location
-                if (currentLocation != null) {
-                    locationChangeListener?.onLocationChanged(currentLocation.latitude, currentLocation.longitude)
+                currentLocation?.let {
+                    locationChangeListener?.onLocationChanged(it)
                 }
             }
         }
@@ -64,6 +66,6 @@ class LocationService : Service() {
 
     // Add this interface for components interested in location updates
     interface LocationChangeListener {
-        fun onLocationChanged(latitude: Double, longitude: Double)
+        fun onLocationChanged(location: Location)
     }
 }

@@ -31,7 +31,7 @@ class LocationService : Service() {
     private val localBinder = LocalBinder()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    private var locationChangeListener: LocationChangeListener? = null // Add this line
+    private var locationChangeListener: LocationChangeListener? = null
 
     override fun onCreate() {
         super.onCreate()

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,9 +75,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         googleMap = map
 
         // Add a marker in IT University of Copenhagen and move the camera.
-        val itu = LatLng(55.6596, 12.5910)
-        googleMap.addMarker(MarkerOptions().position(itu).title("IT University of Copenhagen"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(itu))  //Not userLocation...
+      //  val itu = LatLng(55.6596, 12.5910)
+      //  googleMap.addMarker(MarkerOptions().position(itu).title("IT University of Copenhagen"))
+       // googleMap.moveCamera(CameraUpdateFactory.newLatLng(itu))  //Not userLocation...
 
         // Move the Google Maps UI buttons under the OS top bar.
         googleMap.setPadding(0, 100, 0, 0)
@@ -85,8 +86,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         if (checkPermission()) {
             googleMap.isMyLocationEnabled = true
             locationService?.setLocationChangeListener(object : LocationService.LocationChangeListener {
-                //*****Does not work!*****
+
                 override fun onLocationChanged(location: Location) {
+                    Log.d(tag, location.latitude.toString())
                     val userLocation = LatLng(location.latitude, location.longitude)
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
                 }

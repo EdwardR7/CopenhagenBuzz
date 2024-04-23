@@ -40,6 +40,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+        private const val COPENHAGEN_LATITUDE = 55.6761
+        private const val COPENHAGEN_LONGITUDE = 12.5683
+        private const val ZOOM_LEVEL = 12f
     }
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -74,10 +77,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        // Add a marker in IT University of Copenhagen and move the camera.
-      //  val itu = LatLng(55.6596, 12.5910)
-      //  googleMap.addMarker(MarkerOptions().position(itu).title("IT University of Copenhagen"))
-       // googleMap.moveCamera(CameraUpdateFactory.newLatLng(itu))  //Not userLocation...
+        val copenhagen = LatLng(COPENHAGEN_LATITUDE, COPENHAGEN_LONGITUDE)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(copenhagen, ZOOM_LEVEL))
 
         // Move the Google Maps UI buttons under the OS top bar.
         googleMap.setPadding(0, 100, 0, 0)

@@ -33,4 +33,6 @@
     <string name="loginText">Login</string>
     <string name="guestText">Guest</string>
     <string name="user_info_title">default\n</string>
+    <string name="user_info">user info</string>
+    <string name="logout">logout</string>
 </resources>

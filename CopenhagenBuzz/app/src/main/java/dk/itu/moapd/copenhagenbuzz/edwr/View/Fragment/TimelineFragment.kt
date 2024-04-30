@@ -79,6 +79,8 @@ class TimelineFragment : Fragment() {
         }
 
 
+
+
     private fun filterEvent(eventType: String?) {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("events")
         var query = databaseReference.orderByChild("eventType")

@@ -17,6 +17,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.edwr.Manifest
 import dk.itu.moapd.copenhagenbuzz.edwr.R
+import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentImageBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,7 +45,7 @@ class ImageFragment  : Fragment(){
 
     private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-    private val viewModel: ViewModel by activityViewModels()
+    private val viewModel: DataViewModel by activityViewModels()
 
     private var imageCapture: ImageCapture? = null
 
@@ -73,7 +75,7 @@ class ImageFragment  : Fragment(){
         if (checkPermission())
             startCamera()
         else
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            // not allowed
 
         // The current selected camera.
         viewModel.selector.observe(viewLifecycleOwner) {
@@ -106,19 +108,9 @@ class ImageFragment  : Fragment(){
                     startCamera()
                 }
             }
-
-            // Set up the listener for the photo view button.
-            buttonImageViewer.setOnClickListener {
-                imageUri?.let { uri ->
-                    val bundle = bundleOf("ARG_IMAGE" to uri.toString())
-
-                    // Navigate to the `ImageFragment` passing the `Image` instance as an argument.
-                    requireActivity().findNavController(R.id.fragment_container_view)
-                        .navigate(R.id.action_imageFragment_to_timelineFragment, bundle)
-                }
-            }
         }
     }
+
     private fun checkPermission() =
         ActivityCompat.checkSelfPermission(
             requireContext(),

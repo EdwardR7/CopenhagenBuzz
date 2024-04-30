@@ -110,6 +110,7 @@ class MainActivity : AppCompatActivity() {
         auth.currentUser ?: startLoginActivity()
     }
 
+
     private fun startLoginActivity() {
         Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or

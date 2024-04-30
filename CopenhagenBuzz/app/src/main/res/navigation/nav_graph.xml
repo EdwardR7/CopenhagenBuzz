@@ -26,6 +26,12 @@
         android:id="@+id/AddEventFragment"
         android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.AddEventFragment"
         android:label="AddEvent" />
+
+    <fragment
+        android:id="@+id/ImageFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.ImageFragment"
+        android:label="AddEvent" />
+
     <action
         android:id="@+id/action_timelineFragment_to_UpdateEventFragment"
         app:destination="@id/UpdateEventFragment"/>
@@ -43,6 +49,10 @@
 
     <action
         android:id="@+id/action_calendarFragment_to_timelineFragment"
+        app:destination="@id/TimelineFragment" />
+
+    <action
+        android:id="@+id/action_imageFragment_to_timelineFragment"
         app:destination="@id/TimelineFragment" />
 
 </navigation>

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
@@ -37,6 +39,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var database: DatabaseReference
     private var locationService: LocationService? = null
     private var locationServiceBound = false
+    private val drawingPoints = mutableListOf<LatLng>()
+    private var isDrawingModeEnabled = false
+    private val eventsList: MutableList<Event> = mutableListOf()
+    private var drawnPolyline: PolylineOptions? = null
 
     companion object {
         const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
@@ -70,8 +76,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference.child("events")
 
+        _binding = FragmentMapsBinding.bind(view) // Bind the view
         val mapFragment = childFragmentManager.findFragmentById(binding.map.id) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+
+        binding.toggleDrawingButton.setOnClickListener {
+            toggleDrawingMode()
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -82,6 +93,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         // Move the Google Maps UI buttons under the OS top bar.
         googleMap.setPadding(0, 100, 0, 0)
+
+        googleMap.setOnMapClickListener { point ->
+            if (isDrawingModeEnabled) {
+                // Add the clicked point to the list
+                drawingPoints.add(point)
+                // Draw the polyline
+                drawPolyline()
+            }
+        }
 
         // Enable the location layer. Request the permission if it is not granted.
         if (checkPermission()) {
@@ -102,12 +122,30 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         fetchEvents()
     }
 
+    private fun drawPolyline() {
+        if (drawnPolyline != null) {
+            googleMap.clear() // Clear existing polylines and markers
+            // Redraw event markers
+            eventsList.forEach { addMarker(it) }
+        }
+        val polylineOptions = PolylineOptions()
+            .addAll(drawingPoints)
+            .width(5f)
+            .color(Color.RED)
+        googleMap.addPolyline(polylineOptions)
+        drawnPolyline = polylineOptions
+    }
+
     private fun fetchEvents() {
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                eventsList.clear()
                 for (eventSnapshot in snapshot.children) {
                     val event = eventSnapshot.getValue(Event::class.java)
-                    event?.let { addMarker(it) }
+                    event?.let {
+                        eventsList.add(it)
+                        addMarker(it)
+                    }
                 }
             }
 
@@ -124,6 +162,17 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 .position(eventLocation)
                 .title(event.eventName)
         )
+    }
+
+    private fun toggleDrawingMode() {
+        isDrawingModeEnabled = !isDrawingModeEnabled
+        if (isDrawingModeEnabled) {
+            // Enable drawing mode
+            binding.toggleDrawingButton.text = "Drawing Mode Enabled"
+        } else {
+            // Disable drawing mode
+            binding.toggleDrawingButton.text = "Toggle Drawing Mode"
+        }
     }
 
     private fun checkPermission(): Boolean {

@@ -172,7 +172,7 @@ class ImageFragment  : Fragment(){
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     imageUri = output.savedUri
                     val imageRef = FirebaseStorage.getInstance().reference.child("images")
-                    val newImageKey = imageRef.push().key
+                    //val newImageKey = imageRef.push().key
                     Snackbar.make(binding.root, "Photo capture succeeded: $filename.jpg", Snackbar.LENGTH_SHORT)
                         .setAnchorView(binding.buttonImageCapture).show()
                 }

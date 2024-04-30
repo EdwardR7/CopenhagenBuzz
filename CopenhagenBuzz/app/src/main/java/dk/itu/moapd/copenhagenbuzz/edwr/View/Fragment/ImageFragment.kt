@@ -1,5 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,16 +18,11 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
-import dk.itu.moapd.copenhagenbuzz.edwr.Manifest
-import dk.itu.moapd.copenhagenbuzz.edwr.R
+import com.google.firebase.storage.FirebaseStorage
 import dk.itu.moapd.copenhagenbuzz.edwr.ViewModel.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentImageBinding
 import java.text.SimpleDateFormat
@@ -75,6 +71,7 @@ class ImageFragment  : Fragment(){
         if (checkPermission())
             startCamera()
         else
+            requestPermissionLauncher
             // not allowed
 
         // The current selected camera.
@@ -110,6 +107,8 @@ class ImageFragment  : Fragment(){
             }
         }
     }
+
+
 
     private fun checkPermission() =
         ActivityCompat.checkSelfPermission(
@@ -172,6 +171,8 @@ class ImageFragment  : Fragment(){
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     imageUri = output.savedUri
+                    val imageRef = FirebaseStorage.getInstance().reference.child("images")
+                    val newImageKey = imageRef.push().key
                     Snackbar.make(binding.root, "Photo capture succeeded: $filename.jpg", Snackbar.LENGTH_SHORT)
                         .setAnchorView(binding.buttonImageCapture).show()
                 }

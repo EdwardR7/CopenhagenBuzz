@@ -41,5 +41,6 @@ data class Event(
     var eventDescription: String = "",
     var isFavorite: Boolean = false,
     var userId: String = "",
-    val eventId: String = ""
+    val eventId: String = "",
+    var imageUrl: String = ""
 )

@@ -1,25 +1,27 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment
-import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.EventLocation
+import dk.itu.moapd.copenhagenbuzz.edwr.R
 import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 class AddEventFragment : Fragment() {
     private var _binding: FragmentAddeventBinding? = null
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private val binding get() = _binding!!
+
 
     private var selectedDate: Long = 0
 
@@ -43,6 +45,7 @@ class AddEventFragment : Fragment() {
             val eventLocation = binding.editTextEventLocation.text.toString().trim()
             val eventType = binding.editEventType.text.toString().trim()
             val eventDescription = binding.editTextEventDesc.text.toString().trim()
+            val imageUrl = ""
 
             if (eventName.isNotEmpty() && eventType.isNotEmpty() && eventDescription.isNotEmpty() && eventLocation.isNotEmpty() && currentUser?.isAnonymous != true) {
                 val geocoder = Geocoder(requireContext(), Locale.getDefault())
@@ -67,7 +70,8 @@ class AddEventFragment : Fragment() {
                                 eventLocation = EventLocation(latitude, longitude, address),
                                 eventType = eventType,
                                 isFavorite = false,
-                                userId = userId
+                                userId = userId,
+                                imageUrl = imageUrl
                             )
                         }
 
@@ -91,12 +95,16 @@ class AddEventFragment : Fragment() {
                     .setAnchorView(binding.addEventButton).show()
             }
         }
+        binding.takePictureButton.setOnClickListener{
+            findNavController().navigate(R.id.action_timelineFragment_to_imageFragment)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
     private fun showDatePicker() {
         val builder = MaterialDatePicker.Builder.datePicker()

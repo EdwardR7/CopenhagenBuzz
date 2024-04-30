@@ -119,6 +119,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/navigation_addevent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/take_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/baseline_image_24"
+        style="?attr/floatingActionButtonSecondaryStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_event_desc"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

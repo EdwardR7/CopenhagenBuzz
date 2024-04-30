@@ -55,4 +55,9 @@
         android:id="@+id/action_imageFragment_to_timelineFragment"
         app:destination="@id/TimelineFragment" />
 
+    <action
+        android:id="@+id/action_timelineFragment_to_imageFragment"
+        app:destination="@id/ImageFragment" />
+
+
 </navigation>

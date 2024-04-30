@@ -35,4 +35,5 @@
     <string name="user_info_title">default\n</string>
     <string name="user_info">user info</string>
     <string name="logout">logout</string>
+    <string name="toggle_drawing_mode">Toggle Drawing Mode</string>
 </resources>

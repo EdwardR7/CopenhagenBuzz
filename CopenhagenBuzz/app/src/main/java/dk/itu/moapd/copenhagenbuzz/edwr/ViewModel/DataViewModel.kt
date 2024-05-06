@@ -1,17 +1,20 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.ViewModel
 
+import android.net.Uri
 import androidx.camera.core.CameraSelector
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import dk.itu.moapd.copenhagenbuzz.edwr.DATABASE_URL
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 
 class DataViewModel : ViewModel() {
     private val _favorites = MutableLiveData<List<Event>>()
     private val _eventLocation = MutableLiveData<String>()
+    private val storage = FirebaseStorage.getInstance()
 
     val favorites: LiveData<List<Event>>
         get() = _favorites
@@ -79,6 +82,20 @@ class DataViewModel : ViewModel() {
      */
     fun onCameraSelectorChanged(selector: CameraSelector) {
         this._selector.value = selector
+    }
+
+    /* callback should be String? */
+    fun uploadImage(imageUri: Uri, callback: (String) -> Unit) {
+        val storageRef = storage.reference
+        val imageRef = storageRef.child("images/${imageUri.lastPathSegment}")
+        val uploadTask = imageRef.putFile(imageUri)
+        uploadTask.addOnCompleteListener {
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                val downloadUrl = uri.toString()
+                callback(downloadUrl)
+            }
+            callback("")
+        }
     }
 
 }

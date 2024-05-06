@@ -11,6 +11,21 @@
 
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/approve_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:iconSize="48dp"
+        app:iconTint="@android:color/white"
+        app:strokeColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_image_capture"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <Button
+        style="?attr/materialIconButtonOutlinedStyle"
+        android:layout_marginBottom="40dp"
         android:id="@+id/button_camera_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,8 +42,8 @@
         android:id="@+id/button_image_capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/fab_margin"
-        app:iconSize="80dp"
+        android:layout_marginBottom="80dp"
+        app:iconSize="48dp"
         app:iconTint="@android:color/white"
         app:strokeColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +55,7 @@
         android:id="@+id/button_image_viewer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
         app:iconSize="48dp"
         app:iconTint="@android:color/white"
         app:strokeColor="@android:color/white"

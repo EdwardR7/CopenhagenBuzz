@@ -1,22 +1,15 @@
 package dk.itu.moapd.copenhagenbuzz.edwr.Adapter
 
-import android.content.ClipData.Item
 import android.content.Context
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.Query
 import dk.itu.moapd.copenhagenbuzz.edwr.Model.Event
 import dk.itu.moapd.copenhagenbuzz.edwr.R
-import dk.itu.moapd.copenhagenbuzz.edwr.View.Fragment.UpdateEventFragment
-import dk.itu.moapd.copenhagenbuzz.edwr.databinding.FragmentAddeventBinding
 
 interface OnItemClickListener {
     fun onItemClick(event: Event)

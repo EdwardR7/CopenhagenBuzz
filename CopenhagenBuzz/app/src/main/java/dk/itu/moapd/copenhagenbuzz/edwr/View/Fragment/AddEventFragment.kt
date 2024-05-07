@@ -204,7 +204,6 @@
             }
         }
 
-
         private fun uploadImageToFirebaseStorage(imageUri: Uri) {
             viewModel.uploadImage(imageUri) { returnImageUrl ->
                 if (returnImageUrl.isNotEmpty()) {
@@ -246,7 +245,6 @@
                 }
             }
         }
-
 
         private fun showDatePicker() {
             val builder = MaterialDatePicker.Builder.datePicker()

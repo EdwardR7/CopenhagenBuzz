@@ -36,7 +36,6 @@ class ImageFragment  : Fragment(){
 
     private var _binding: FragmentImageBinding? = null
 
-
     private val binding
         get() = requireNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"

@@ -97,7 +97,7 @@ class UpdateEventFragment : Fragment() {
                 if (checkGalleryPermission())
                     openGallery()
                 else
-                    requestGalleryPermissions()
+                    openGallery()
             }
 
             addEventButton.setOnClickListener {
